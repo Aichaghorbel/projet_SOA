@@ -1,0 +1,9 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: university-administration
+
+# Aucune base de donnees au Sprint 1 : le modele (init-admin.sql) est fourni par M6
+# et sera branche au Sprint 2.
