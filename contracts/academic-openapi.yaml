@@ -1,0 +1,583 @@
+openapi: 3.0.3
+info:
+  title: EduCampus - Academic Service API
+  description: Contrat REST final du service Academic (students, courses, enrollments, schedules, exams,
+    results). Versionnement /api/v1.
+  version: 1.0.0
+servers:
+- url: http://localhost:8081
+  description: Environnement local
+tags:
+- name: Students
+  description: Gestion des étudiants
+- name: Courses
+  description: Gestion des cours
+paths:
+  /api/v1/students:
+    get:
+      tags:
+      - Students
+      operationId: listStudents
+      summary: Récupérer la liste des étudiants
+      parameters:
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/Size'
+      - name: q
+        in: query
+        description: Recherche texte (nom, prénom, email ou numéro étudiant)
+        required: false
+        schema:
+          type: string
+          maxLength: 100
+      responses:
+        '200':
+          description: Liste paginée des étudiants
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentPage'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    post:
+      tags:
+      - Students
+      operationId: createStudent
+      summary: Créer un étudiant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentRequest'
+            example:
+              studentNumber: ETU2026001
+              firstName: Amine
+              lastName: Ben Salah
+              email: amine.bensalah@educampus.tn
+              dateOfBirth: '2003-05-14'
+              phone: '+21650123456'
+              program: Génie Logiciel
+              level: 3
+      responses:
+        '201':
+          description: Étudiant créé
+          headers:
+            Location:
+              description: URL de la ressource créée
+              schema:
+                type: string
+                example: /api/v1/students/1
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /api/v1/students/{id}:
+    parameters:
+    - $ref: '#/components/parameters/StudentId'
+    get:
+      tags:
+      - Students
+      operationId: getStudentById
+      summary: Récupérer un étudiant
+      responses:
+        '200':
+          description: Étudiant trouvé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    put:
+      tags:
+      - Students
+      operationId: updateStudent
+      summary: Modifier un étudiant (remplacement complet)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentRequest'
+      responses:
+        '200':
+          description: Étudiant modifié
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      tags:
+      - Students
+      operationId: deleteStudent
+      summary: Supprimer un étudiant
+      responses:
+        '204':
+          description: Étudiant supprimé (pas de contenu)
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /api/v1/courses:
+    get:
+      tags:
+      - Courses
+      operationId: listCourses
+      summary: Récupérer la liste des cours
+      parameters:
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/Size'
+      - name: semester
+        in: query
+        description: Filtrer par semestre
+        required: false
+        schema:
+          $ref: '#/components/schemas/Semester'
+      - name: q
+        in: query
+        description: Recherche texte (code, titre ou enseignant)
+        required: false
+        schema:
+          type: string
+          maxLength: 100
+      responses:
+        '200':
+          description: Liste paginée des cours
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoursePage'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    post:
+      tags:
+      - Courses
+      operationId: createCourse
+      summary: Créer un cours
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseRequest'
+            example:
+              code: SOA301
+              title: Architecture orientée services
+              description: REST, gRPC et SOAP
+              credits: 4
+              semester: S5
+              teacherName: Dr. Karim Trabelsi
+              capacity: 40
+      responses:
+        '201':
+          description: Cours créé
+          headers:
+            Location:
+              description: URL de la ressource créée
+              schema:
+                type: string
+                example: /api/v1/courses/1
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /api/v1/courses/{id}:
+    parameters:
+    - $ref: '#/components/parameters/CourseId'
+    get:
+      tags:
+      - Courses
+      operationId: getCourseById
+      summary: Récupérer un cours
+      responses:
+        '200':
+          description: Cours trouvé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    put:
+      tags:
+      - Courses
+      operationId: updateCourse
+      summary: Modifier un cours (remplacement complet)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseRequest'
+      responses:
+        '200':
+          description: Cours modifié
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      tags:
+      - Courses
+      operationId: deleteCourse
+      summary: Supprimer un cours
+      responses:
+        '204':
+          description: Cours supprimé (pas de contenu)
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  parameters:
+    StudentId:
+      name: id
+      in: path
+      required: true
+      description: Identifiant de l'étudiant
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
+    CourseId:
+      name: id
+      in: path
+      required: true
+      description: Identifiant du cours
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
+    Page:
+      name: page
+      in: query
+      description: Numéro de page (commence à 0)
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+    Size:
+      name: size
+      in: query
+      description: Taille de page
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+  schemas:
+    Semester:
+      type: string
+      enum:
+      - S1
+      - S2
+      - S3
+      - S4
+      - S5
+      - S6
+      description: Semestre du cours
+    StudentRequest:
+      type: object
+      required:
+      - studentNumber
+      - firstName
+      - lastName
+      - email
+      - level
+      properties:
+        studentNumber:
+          type: string
+          pattern: ^[A-Za-z0-9-]{4,20}$
+          example: ETU2026001
+          description: Numéro d'étudiant unique
+        firstName:
+          type: string
+          minLength: 2
+          maxLength: 100
+          example: Amine
+        lastName:
+          type: string
+          minLength: 2
+          maxLength: 100
+          example: Ben Salah
+        email:
+          type: string
+          format: email
+          maxLength: 150
+          example: amine.bensalah@educampus.tn
+        dateOfBirth:
+          type: string
+          format: date
+          example: '2003-05-14'
+          description: Doit être dans le passé
+        phone:
+          type: string
+          pattern: ^\+?[0-9 ]{8,20}$
+          example: '+21650123456'
+        program:
+          type: string
+          maxLength: 100
+          example: Génie Logiciel
+          description: Filière
+        level:
+          type: integer
+          minimum: 1
+          maximum: 5
+          example: 3
+          description: Niveau d'étude
+    Student:
+      allOf:
+      - $ref: '#/components/schemas/StudentRequest'
+      - type: object
+        required:
+        - id
+        - createdAt
+        - updatedAt
+        properties:
+          id:
+            type: integer
+            format: int64
+            readOnly: true
+            example: 1
+          createdAt:
+            type: string
+            format: date-time
+            readOnly: true
+          updatedAt:
+            type: string
+            format: date-time
+            readOnly: true
+    StudentPage:
+      type: object
+      required:
+      - content
+      - page
+      - size
+      - totalElements
+      - totalPages
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Student'
+        page:
+          type: integer
+          example: 0
+        size:
+          type: integer
+          example: 20
+        totalElements:
+          type: integer
+          format: int64
+          example: 1
+        totalPages:
+          type: integer
+          example: 1
+    CourseRequest:
+      type: object
+      required:
+      - code
+      - title
+      - credits
+      - semester
+      properties:
+        code:
+          type: string
+          pattern: ^[A-Z]{2,5}[0-9]{2,4}$
+          example: SOA301
+          description: Code unique du cours
+        title:
+          type: string
+          minLength: 3
+          maxLength: 150
+          example: Architecture orientée services
+        description:
+          type: string
+          maxLength: 1000
+        credits:
+          type: integer
+          minimum: 1
+          maximum: 30
+          example: 4
+        semester:
+          $ref: '#/components/schemas/Semester'
+        teacherName:
+          type: string
+          maxLength: 100
+          example: Dr. Karim Trabelsi
+        capacity:
+          type: integer
+          minimum: 1
+          maximum: 500
+          example: 40
+          description: Nombre maximal d'étudiants
+    Course:
+      allOf:
+      - $ref: '#/components/schemas/CourseRequest'
+      - type: object
+        required:
+        - id
+        - createdAt
+        - updatedAt
+        properties:
+          id:
+            type: integer
+            format: int64
+            readOnly: true
+            example: 1
+          createdAt:
+            type: string
+            format: date-time
+            readOnly: true
+          updatedAt:
+            type: string
+            format: date-time
+            readOnly: true
+    CoursePage:
+      type: object
+      required:
+      - content
+      - page
+      - size
+      - totalElements
+      - totalPages
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Course'
+        page:
+          type: integer
+          example: 0
+        size:
+          type: integer
+          example: 20
+        totalElements:
+          type: integer
+          format: int64
+          example: 1
+        totalPages:
+          type: integer
+          example: 1
+    FieldError:
+      type: object
+      required:
+      - field
+      - message
+      properties:
+        field:
+          type: string
+          example: email
+        message:
+          type: string
+          example: doit être une adresse email valide
+    ErrorResponse:
+      type: object
+      required:
+      - timestamp
+      - status
+      - error
+      - message
+      - path
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+          example: 400
+        error:
+          type: string
+          example: Bad Request
+        message:
+          type: string
+          example: Données invalides
+        path:
+          type: string
+          example: /api/v1/students
+        details:
+          type: array
+          description: Erreurs de validation par champ (400 uniquement)
+          items:
+            $ref: '#/components/schemas/FieldError'
+  responses:
+    BadRequest:
+      description: Requête invalide (validation, paramètre mal formé)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Ressource introuvable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            timestamp: '2026-11-14T10:00:00Z'
+            status: 404
+            error: Not Found
+            message: Étudiant 42 introuvable
+            path: /api/v1/students/42
+    Conflict:
+      description: Conflit (doublon d'email, de numéro étudiant, de code cours, ou ressource encore référencée)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalError:
+      description: Erreur interne du serveur
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'

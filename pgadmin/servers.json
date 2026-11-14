@@ -1,0 +1,13 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "EduCampus Academic",
+      "Group": "Servers",
+      "Host": "postgres-academic",
+      "Port": 5432,
+      "MaintenanceDB": "academic_db",
+      "Username": "academic",
+      "SSLMode": "prefer"
+    }
+  }
+}
