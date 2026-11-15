@@ -1,0 +1,31 @@
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Docker
+docker-compose.override.yml
+
+# Database data
+postgres-data/
+*.sql
+*.dump
+
+# Logs
+*.log
+logs/
+
+# Java / Maven
+target/
+*.class
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Operating system
+.DS_Store
+Thumbs.db
+desktop.ini
