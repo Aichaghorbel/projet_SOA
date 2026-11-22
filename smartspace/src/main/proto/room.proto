@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package smartspace;
+
+option java_multiple_files = true;
+option java_package = "com.example.smartspace.proto";
+option java_outer_classname = "RoomProto";
+
+// Room service definition
+service RoomService {
+  // Create a new room
+  rpc CreateRoom (CreateRoomRequest) returns (CreateRoomResponse);
+  // Get room details by ID
+  rpc GetRoom (GetRoomRequest) returns (Room);
+  // Update room information
+  rpc UpdateRoom (UpdateRoomRequest) returns (UpdateRoomResponse);
+  // Delete a room
+  rpc DeleteRoom (DeleteRoomRequest) returns (DeleteRoomResponse);
+  // List all rooms
+  rpc ListRooms (ListRoomsRequest) returns (ListRoomsResponse);
+}
+
+// Messages
+message Room {
+  int64 id = 1; // stable field number
+  string name = 2;
+  int32 capacity = 3;
+  string location = 4;
+  repeated Reservation reservations = 5;
+}
+
+message Reservation {
+  int64 id = 1;
+  int64 room_id = 2;
+  string user = 3;
+  string start_time = 4; // ISO-8601 timestamp
+  string end_time = 5;   // ISO-8601 timestamp
+}
+
+message CreateRoomRequest {
+  string name = 1;
+  int32 capacity = 2;
+  string location = 3;
+}
+
+message CreateRoomResponse {
+  Room room = 1;
+}
+
+message GetRoomRequest {
+  int64 id = 1;
+}
+
+message UpdateRoomRequest {
+  int64 id = 1;
+  string name = 2;
+  int32 capacity = 3;
+  string location = 4;
+}
+
+message UpdateRoomResponse {
+  Room room = 1;
+}
+
+message DeleteRoomRequest {
+  int64 id = 1;
+}
+
+message DeleteRoomResponse {
+  bool success = 1;
+}
+
+message ListRoomsRequest {}
+
+message ListRoomsResponse {
+  repeated Room rooms = 1;
+}
+
+// Anti‑overlap rule documentation can be added in comments or separate .md files.
