@@ -5,17 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="15620b3c-f397-45dc-b6cd-ae20097aeec8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/db/init-admin.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/admin-class-diagram.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/soap-examples.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/university-administration/projet_SOA/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/university-administration/src/main/java/com/educampus/administration/exception/CertificationNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/university-administration/src/main/java/com/educampus/administration/exception/DuplicateCertificationException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/university-administration/src/main/java/com/educampus/administration/exception/InvalidStatusTransitionException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/university-administration/src/main/java/com/educampus/administration/model/CertificationRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/university-administration/src/main/java/com/educampus/administration/service/CertificationService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/university-administration/src/test/java/com/educampus/administration/service/CertificationServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/university-administration/src/main/java/com/educampus/administration/endpoint/CertificationEndpoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/university-administration/src/main/java/com/educampus/administration/endpoint/CertificationEndpoint.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/university-administration/src/main/java/com/educampus/administration/exception/InvalidRequestException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/university-administration/src/main/java/com/educampus/administration/exception/StudentNotEligibleException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/university-administration/src/main/java/com/educampus/administration/model/StudentRecord.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/university-administration/src/main/java/com/educampus/administration/service/EligibilityService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/university-administration/src/test/java/com/educampus/administration/service/EligibilityServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/university-administration/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/university-administration/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/university-administration/src/main/java/com/educampus/administration/config/WebServiceConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/university-administration/src/main/java/com/educampus/administration/config/WebServiceConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/university-administration/src/main/java/com/educampus/administration/endpoint/EligibilityEndpoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/university-administration/src/main/java/com/educampus/administration/endpoint/EligibilityEndpoint.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,15 +53,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Merging feature/soap-xsd-wsdl&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/projet_SOA&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "feature/soap-xsd-wsdl",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/projet_SOA/university-administration/src/test/java/com/educampus/administration/service"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\projet_SOA\university-administration\src\test\java\com\educampus\administration\service" />
+      <recent name="C:\projet_SOA\university-administration\src\main\java\com\educampus\administration\exception" />
+      <recent name="C:\projet_SOA\university-administration\requests" />
+      <recent name="C:\projet_SOA\university-administration\src\test\java\com\educampus\administration" />
+      <recent name="C:\projet_SOA\university-administration\src\main\java\com\educampus\administration\service" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
