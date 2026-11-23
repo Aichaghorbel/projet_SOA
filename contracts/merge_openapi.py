@@ -2,7 +2,7 @@
 """Fusionne plusieurs fragments OpenAPI en un contrat unique.
 
 Usage :
-  python merge_openapi.py -o academic-openapi.yaml students-courses.yaml fragment-membre2.yaml
+  python merge_openapi.py -o academic-openapi.yaml students-courses.yaml enrollments-results.yaml
 
 Règles : paths / components / tags sont fusionnés ; un doublon DIFFÉRENT
 (même chemin ou même schéma avec un contenu différent) arrête la fusion
@@ -15,10 +15,13 @@ import yaml
 INFO = {
     "title": "EduCampus - Academic Service API",
     "description": "Contrat REST final du service Academic (students, courses, "
-                   "enrollments, schedules, exams, results). Versionnement /api/v1.",
+                   "enrollments, results, certification-requests). Versionnement /api/v1.",
     "version": "1.0.0",
 }
-SERVERS = [{"url": "http://localhost:8081", "description": "Environnement local"}]
+SERVERS = [
+    {"url": "http://localhost:8081", "description": "Environnement local (Maven / IDE)"},
+    {"url": "http://localhost:8082", "description": "Docker Compose"},
+]
 
 
 def merge_map(target, source, label):

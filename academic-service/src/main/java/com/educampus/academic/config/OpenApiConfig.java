@@ -13,7 +13,7 @@ public class OpenApiConfig {
     public OpenAPI academicOpenApi() {
         return new OpenAPI().info(new Info()
                 .title("EduCampus - Academic Service API")
-                .description("API REST du service Academic : étudiants et cours (versionnement /api/v1).")
+                .description("API REST du service Academic : étudiants, cours, inscriptions, résultats et demandes de certification (versionnement /api/v1).")
                 .version("1.0.0"));
     }
 }

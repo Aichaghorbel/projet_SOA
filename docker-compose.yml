@@ -49,7 +49,19 @@ services:
       DB_PASSWORD: ${ACADEMIC_DB_PASSWORD:-academic}
       SPRING_PROFILES_ACTIVE: prod
     ports:
-      - "8081:8081"
+      - "8082:8081"   # 8082 côté PC pour éviter un conflit avec une ancienne instance sur 8081
+
+  # Documentation seule : affiche contracts/academic-openapi.yaml (22 endpoints),
+  # indépendamment du service Java. http://localhost:8090
+  swagger-contract:
+    image: swaggerapi/swagger-ui:v5.17.14
+    container_name: educampus-swagger-contract
+    environment:
+      SWAGGER_JSON: /spec/academic-openapi.yaml
+    ports:
+      - "8090:8080"
+    volumes:
+      - ./contracts:/spec:ro
 
 volumes:
   academic_pgdata:

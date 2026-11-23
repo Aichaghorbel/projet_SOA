@@ -1,17 +1,25 @@
 openapi: 3.0.3
 info:
   title: EduCampus - Academic Service API
-  description: Contrat REST final du service Academic (students, courses, enrollments, schedules, exams,
-    results). Versionnement /api/v1.
+  description: Contrat REST final du service Academic (students, courses, enrollments, results, certification-requests).
+    Versionnement /api/v1.
   version: 1.0.0
 servers:
 - url: http://localhost:8081
-  description: Environnement local
+  description: Environnement local (Maven / IDE)
+- url: http://localhost:8082
+  description: Docker Compose
 tags:
 - name: Students
   description: Gestion des étudiants
 - name: Courses
   description: Gestion des cours
+- name: Enrollments
+  description: Inscriptions des étudiants aux cours
+- name: Results
+  description: Résultats (notes) des étudiants
+- name: Certification
+  description: Demandes de certification (intégration SOAP)
 paths:
   /api/v1/students:
     get:
@@ -276,6 +284,311 @@ paths:
           $ref: '#/components/responses/Conflict'
         '500':
           $ref: '#/components/responses/InternalError'
+  /api/v1/enrollments:
+    get:
+      tags:
+      - Enrollments
+      summary: Lister les inscriptions
+      operationId: listEnrollments
+      parameters:
+      - name: studentId
+        in: query
+        schema:
+          type: integer
+          format: int64
+        description: Filtrer par étudiant
+      - name: courseId
+        in: query
+        schema:
+          type: integer
+          format: int64
+        description: Filtrer par cours
+      - name: status
+        in: query
+        schema:
+          $ref: '#/components/schemas/EnrollmentStatus'
+      - name: academicYear
+        in: query
+        schema:
+          type: string
+          example: 2026-2027
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/Size'
+      responses:
+        '200':
+          description: Liste paginée des inscriptions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrollmentPage'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+    post:
+      tags:
+      - Enrollments
+      summary: Inscrire un étudiant à un cours
+      description: 'Vérifie l''éligibilité de l''étudiant via le service SOAP
+
+        University Administration (`CheckEligibility`) avant de créer
+
+        l''inscription.
+
+        '
+      operationId: createEnrollment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnrollmentCreateRequest'
+      responses:
+        '201':
+          description: Inscription créée
+          headers:
+            Location:
+              description: URI de l'inscription créée
+              schema:
+                type: string
+                example: /api/v1/enrollments/42
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enrollment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /api/v1/enrollments/{enrollmentId}:
+    parameters:
+    - $ref: '#/components/parameters/EnrollmentId'
+    get:
+      tags:
+      - Enrollments
+      summary: Consulter une inscription
+      operationId: getEnrollment
+      responses:
+        '200':
+          description: Inscription trouvée
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enrollment'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags:
+      - Enrollments
+      summary: Modifier le statut d'une inscription
+      operationId: updateEnrollmentStatus
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnrollmentStatusUpdate'
+      responses:
+        '200':
+          description: Statut mis à jour
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enrollment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+    delete:
+      tags:
+      - Enrollments
+      summary: Supprimer une inscription
+      description: Impossible si des résultats sont rattachés à l'inscription (409).
+      operationId: deleteEnrollment
+      responses:
+        '204':
+          description: Inscription supprimée
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+  /api/v1/enrollments/{enrollmentId}/results:
+    parameters:
+    - $ref: '#/components/parameters/EnrollmentId'
+    get:
+      tags:
+      - Results
+      summary: Lister les résultats d'une inscription
+      operationId: listResultsByEnrollment
+      responses:
+        '200':
+          description: Résultats de l'inscription
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Result'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /api/v1/results:
+    get:
+      tags:
+      - Results
+      summary: Lister les résultats
+      operationId: listResults
+      parameters:
+      - name: studentId
+        in: query
+        schema:
+          type: integer
+          format: int64
+      - name: courseId
+        in: query
+        schema:
+          type: integer
+          format: int64
+      - name: examId
+        in: query
+        schema:
+          type: integer
+          format: int64
+      - name: status
+        in: query
+        schema:
+          $ref: '#/components/schemas/ResultStatus'
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/Size'
+      responses:
+        '200':
+          description: Liste paginée des résultats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultPage'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+    post:
+      tags:
+      - Results
+      summary: Enregistrer un résultat
+      operationId: createResult
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResultCreateRequest'
+      responses:
+        '201':
+          description: Résultat créé
+          headers:
+            Location:
+              schema:
+                type: string
+                example: /api/v1/results/7
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Result'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+  /api/v1/results/{resultId}:
+    parameters:
+    - $ref: '#/components/parameters/ResultId'
+    get:
+      tags:
+      - Results
+      summary: Consulter un résultat
+      operationId: getResult
+      responses:
+        '200':
+          description: Résultat trouvé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Result'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags:
+      - Results
+      summary: Remplacer un résultat
+      operationId: updateResult
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResultUpdateRequest'
+      responses:
+        '200':
+          description: Résultat mis à jour
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Result'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+    delete:
+      tags:
+      - Results
+      summary: Supprimer un résultat
+      description: Un résultat publié ne peut pas être supprimé (409).
+      operationId: deleteResult
+      responses:
+        '204':
+          description: Résultat supprimé
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+  /api/v1/certification-requests:
+    post:
+      tags:
+      - Certification
+      summary: Soumettre une demande de certification
+      description: 'Relaye la demande vers le service SOAP University Administration
+
+        (`SubmitCertification`). Le statut est géré côté administration.
+
+        '
+      operationId: createCertificationRequest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CertificationRequestCreate'
+      responses:
+        '202':
+          description: Demande transmise à l'administration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CertificationRequest'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 components:
   parameters:
     StudentId:
@@ -315,6 +628,22 @@ components:
         minimum: 1
         maximum: 100
         default: 20
+    EnrollmentId:
+      name: enrollmentId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
+    ResultId:
+      name: resultId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
   schemas:
     Semester:
       type: string
@@ -550,6 +879,246 @@ components:
           description: Erreurs de validation par champ (400 uniquement)
           items:
             $ref: '#/components/schemas/FieldError'
+    EnrollmentStatus:
+      type: string
+      enum:
+      - PENDING
+      - CONFIRMED
+      - CANCELLED
+      - COMPLETED
+    ResultStatus:
+      type: string
+      enum:
+      - DRAFT
+      - PUBLISHED
+    ResultSource:
+      type: string
+      enum:
+      - MANUAL
+      - EXAM_AUTO
+      description: MANUAL = saisie par l'enseignant, EXAM_AUTO = correction automatique via gRPC
+    SessionType:
+      type: string
+      enum:
+      - NORMAL
+      - RATTRAPAGE
+    Enrollment:
+      type: object
+      required:
+      - id
+      - studentId
+      - courseId
+      - academicYear
+      - status
+      - enrolledAt
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 42
+        studentId:
+          type: integer
+          format: int64
+          example: 1
+        courseId:
+          type: integer
+          format: int64
+          example: 3
+        academicYear:
+          type: string
+          example: 2026-2027
+        status:
+          $ref: '#/components/schemas/EnrollmentStatus'
+        enrolledAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    EnrollmentCreateRequest:
+      type: object
+      required:
+      - studentId
+      - courseId
+      - academicYear
+      properties:
+        studentId:
+          type: integer
+          format: int64
+          minimum: 1
+        courseId:
+          type: integer
+          format: int64
+          minimum: 1
+        academicYear:
+          type: string
+          pattern: ^\d{4}-\d{4}$
+          example: 2026-2027
+    EnrollmentStatusUpdate:
+      type: object
+      required:
+      - status
+      properties:
+        status:
+          $ref: '#/components/schemas/EnrollmentStatus'
+    EnrollmentPage:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Enrollment'
+        page:
+          type: integer
+        size:
+          type: integer
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+    Result:
+      type: object
+      required:
+      - id
+      - enrollmentId
+      - grade
+      - sessionType
+      - status
+      - source
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 7
+        enrollmentId:
+          type: integer
+          format: int64
+          example: 42
+        examId:
+          type: integer
+          format: int64
+          nullable: true
+        grade:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 20
+          example: 14.5
+        sessionType:
+          $ref: '#/components/schemas/SessionType'
+        status:
+          $ref: '#/components/schemas/ResultStatus'
+        source:
+          $ref: '#/components/schemas/ResultSource'
+        comment:
+          type: string
+          maxLength: 500
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        publishedAt:
+          type: string
+          format: date-time
+          nullable: true
+    ResultCreateRequest:
+      type: object
+      required:
+      - enrollmentId
+      - grade
+      - sessionType
+      properties:
+        enrollmentId:
+          type: integer
+          format: int64
+          minimum: 1
+        examId:
+          type: integer
+          format: int64
+          minimum: 1
+          nullable: true
+        grade:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 20
+        sessionType:
+          $ref: '#/components/schemas/SessionType'
+        status:
+          $ref: '#/components/schemas/ResultStatus'
+        comment:
+          type: string
+          maxLength: 500
+    ResultUpdateRequest:
+      type: object
+      required:
+      - grade
+      - sessionType
+      - status
+      properties:
+        grade:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 20
+        sessionType:
+          $ref: '#/components/schemas/SessionType'
+        status:
+          $ref: '#/components/schemas/ResultStatus'
+        comment:
+          type: string
+          maxLength: 500
+    ResultPage:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Result'
+        page:
+          type: integer
+        size:
+          type: integer
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+    CertificationRequestCreate:
+      type: object
+      required:
+      - studentId
+      - certificationType
+      properties:
+        studentId:
+          type: integer
+          format: int64
+          minimum: 1
+        certificationType:
+          type: string
+          example: ATTESTATION_REUSSITE
+    CertificationRequest:
+      type: object
+      properties:
+        requestId:
+          type: string
+          example: CERT-2026-0001
+        studentId:
+          type: integer
+          format: int64
+        certificationType:
+          type: string
+        status:
+          type: string
+          enum:
+          - SUBMITTED
+          - IN_REVIEW
+          - APPROVED
+          - REJECTED
+        submittedAt:
+          type: string
+          format: date-time
   responses:
     BadRequest:
       description: Requête invalide (validation, paramètre mal formé)
@@ -577,6 +1146,18 @@ components:
             $ref: '#/components/schemas/ErrorResponse'
     InternalError:
       description: Erreur interne du serveur
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unprocessable:
+      description: Règle métier non respectée (ex. étudiant non éligible)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ServiceUnavailable:
+      description: Service distant indisponible (timeout / circuit breaker ouvert)
       content:
         application/json:
           schema:
