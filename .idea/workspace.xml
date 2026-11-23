@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="15620b3c-f397-45dc-b6cd-ae20097aeec8" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/db/init-admin.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/admin-class-diagram.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/soap-examples.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/university-administration/projet_SOA/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/university-administration/src/main/java/com/educampus/administration/exception/CertificationNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/university-administration/src/main/java/com/educampus/administration/exception/DuplicateCertificationException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/university-administration/src/main/java/com/educampus/administration/exception/InvalidStatusTransitionException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/university-administration/src/main/java/com/educampus/administration/model/CertificationRecord.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/university-administration/src/main/java/com/educampus/administration/service/CertificationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/university-administration/src/test/java/com/educampus/administration/service/CertificationServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/university-administration/src/main/java/com/educampus/administration/endpoint/CertificationEndpoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/university-administration/src/main/java/com/educampus/administration/endpoint/CertificationEndpoint.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DBNavigator.Project.Workspace.Settings">
+    <assistant-settings>
+      <credential-settings>
+        <credentials />
+      </credential-settings>
+      <profile-settings>
+        <profiles />
+      </profile-settings>
+      <mcp-server-settings>
+        <workspace-integration value="false" />
+        <mcp-servers />
+        <mcp-tool-approvals />
+      </mcp-server-settings>
+    </assistant-settings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="3M6PBRmG7WEIy7RJmDuntxYSxbI" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Merging feature/soap-xsd-wsdl&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/projet_SOA&quot;
+  }
+}</component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="15620b3c-f397-45dc-b6cd-ae20097aeec8" name="Changes" comment="" />
+      <created>1794667908275</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1794667908275</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
