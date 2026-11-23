@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: smartspace-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: smartspace_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./src/main/resources/init-room.sql:/docker-entrypoint-initdb.d/01-init-room.sql:ro
+      - ./src/main/resources/init-exam.sql:/docker-entrypoint-initdb.d/02-init-exam.sql:ro
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
