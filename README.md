@@ -36,8 +36,3 @@ spring.datasource.url=jdbc:postgresql://localhost:5433/Educampus_db
 spring.datasource.username=postgres
 spring.datasource.password=1234
 spring.datasource.driver-class-name=org.postgresql.Driver
-
-
-Configuration PostgreSQL
-La configuration par défaut se trouve dans :
-smartspace/src/main/resources/application.properties
