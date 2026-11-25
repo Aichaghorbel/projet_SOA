@@ -1,0 +1,10 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:uni="http://educampus.com/soap/university-administration">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <uni:CheckEligibilityRequest>
+      <uni:studentId>STU-001</uni:studentId>
+      <uni:academicYear>2026-2027</uni:academicYear>
+    </uni:CheckEligibilityRequest>
+  </soapenv:Body>
+</soapenv:Envelope>

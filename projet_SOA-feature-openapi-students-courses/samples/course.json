@@ -1,0 +1,9 @@
+{
+  "code": "SOA301",
+  "title": "Architecture orientée services",
+  "description": "REST, gRPC et SOAP",
+  "credits": 4,
+  "semester": "S5",
+  "teacherName": "Dr. Karim Trabelsi",
+  "capacity": 40
+}

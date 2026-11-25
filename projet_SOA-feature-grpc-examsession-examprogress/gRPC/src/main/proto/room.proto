@@ -1,0 +1,124 @@
+syntax = "proto3";
+
+package smartspace;
+
+option java_multiple_files = true;
+option java_package = "com.educampus.smartspace.grpc.room";
+option java_outer_classname = "RoomProto";
+
+// Room service definition
+service RoomService {
+  // Create a new room
+  rpc CreateRoom (CreateRoomRequest) returns (CreateRoomResponse);
+  // Get room details by ID
+  rpc GetRoom (GetRoomRequest) returns (Room);
+  // Update room information
+  rpc UpdateRoom (UpdateRoomRequest) returns (UpdateRoomResponse);
+  // Delete a room
+  rpc DeleteRoom (DeleteRoomRequest) returns (DeleteRoomResponse);
+  // List all rooms
+  rpc ListRooms (ListRoomsRequest) returns (ListRoomsResponse);
+}
+
+// Reservation service definition (satisfying gRPC room-reservation requirement and anti_overlap_rule)
+service ReservationService {
+  // Create a new room reservation (validates anti-overlap rule)
+  rpc CreateReservation (CreateReservationRequest) returns (CreateReservationResponse);
+  // Get reservation details by ID
+  rpc GetReservation (GetReservationRequest) returns (Reservation);
+  // List reservations (optionally filtered by room_id)
+  rpc ListReservations (ListReservationsRequest) returns (ListReservationsResponse);
+  // Delete / cancel reservation by ID
+  rpc DeleteReservation (DeleteReservationRequest) returns (DeleteReservationResponse);
+}
+
+// Messages
+message Room {
+  int64 id = 1; // stable field number
+  string name = 2;
+  int32 capacity = 3;
+  string location = 4;
+  repeated Reservation reservations = 5;
+  bool is_active = 6;
+}
+
+message Reservation {
+  int64 id = 1;
+  int64 room_id = 2;
+  string user = 3;
+  string start_time = 4; // ISO-8601 timestamp (e.g. 2026-11-23T14:00:00)
+  string end_time = 5;   // ISO-8601 timestamp (e.g. 2026-11-23T16:00:00)
+  string status = 6;
+  string examen_session_id = 7;
+}
+
+message CreateRoomRequest {
+  string name = 1;
+  int32 capacity = 2;
+  string location = 3;
+}
+
+message CreateRoomResponse {
+  Room room = 1;
+}
+
+message GetRoomRequest {
+  int64 id = 1;
+}
+
+message UpdateRoomRequest {
+  int64 id = 1;
+  string name = 2;
+  int32 capacity = 3;
+  string location = 4;
+}
+
+message UpdateRoomResponse {
+  Room room = 1;
+}
+
+message DeleteRoomRequest {
+  int64 id = 1;
+}
+
+message DeleteRoomResponse {
+  bool success = 1;
+}
+
+message ListRoomsRequest {}
+
+message ListRoomsResponse {
+  repeated Room rooms = 1;
+}
+
+message CreateReservationRequest {
+  int64 room_id = 1;
+  string user = 2; // student / etudiant_id
+  string start_time = 3; // ISO-8601 string
+  string end_time = 4;   // ISO-8601 string
+  string examen_session_id = 5;
+}
+
+message CreateReservationResponse {
+  Reservation reservation = 1;
+}
+
+message GetReservationRequest {
+  int64 id = 1;
+}
+
+message ListReservationsRequest {
+  int64 room_id = 1; // 0 means all rooms
+}
+
+message ListReservationsResponse {
+  repeated Reservation reservations = 1;
+}
+
+message DeleteReservationRequest {
+  int64 id = 1;
+}
+
+message DeleteReservationResponse {
+  bool success = 1;
+}

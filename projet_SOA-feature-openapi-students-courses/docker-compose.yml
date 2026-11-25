@@ -1,0 +1,68 @@
+# EduCampus - Membre 1 : PostgreSQL (Academic) + Academic Service.
+# Le schéma SQL officiel appartient au Membre 2 : déposer son script
+# dans ./db/init-academic.sql (exécuté au premier démarrage du volume).
+services:
+  postgres-academic:
+    image: postgres:16-alpine
+    container_name: educampus-postgres-academic
+    environment:
+      POSTGRES_DB: ${ACADEMIC_DB_NAME:-academic_db}
+      POSTGRES_USER: ${ACADEMIC_DB_USER:-academic}
+      POSTGRES_PASSWORD: ${ACADEMIC_DB_PASSWORD:-academic}
+    ports:
+      - "5432:5432"
+    volumes:
+      - academic_pgdata:/var/lib/postgresql/data
+      - ./db:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${ACADEMIC_DB_USER:-academic} -d ${ACADEMIC_DB_NAME:-academic_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: educampus-pgadmin
+    depends_on:
+      postgres-academic:
+        condition: service_healthy
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@educampus.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: "False"                 # pas d'écran de connexion
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      - ./pgadmin/servers.json:/pgadmin4/servers.json:ro
+
+  academic-service:
+    build: ./academic-service
+    container_name: educampus-academic-service
+    depends_on:
+      postgres-academic:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://postgres-academic:5432/${ACADEMIC_DB_NAME:-academic_db}
+      DB_USERNAME: ${ACADEMIC_DB_USER:-academic}
+      DB_PASSWORD: ${ACADEMIC_DB_PASSWORD:-academic}
+      SPRING_PROFILES_ACTIVE: prod
+    ports:
+      - "8082:8081"   # 8082 côté PC pour éviter un conflit avec une ancienne instance sur 8081
+
+  # Documentation seule : affiche contracts/academic-openapi.yaml (22 endpoints),
+  # indépendamment du service Java. http://localhost:8090
+  swagger-contract:
+    image: swaggerapi/swagger-ui:v5.17.14
+    container_name: educampus-swagger-contract
+    environment:
+      SWAGGER_JSON: /spec/academic-openapi.yaml
+    ports:
+      - "8090:8080"
+    volumes:
+      - ./contracts:/spec:ro
+
+volumes:
+  academic_pgdata:
+  pgadmin_data:
