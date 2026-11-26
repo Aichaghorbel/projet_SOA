@@ -1,0 +1,11 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:uni="http://educampus.com/soap/university-administration">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <uni:SubmitCertificationRequest>
+      <uni:studentId>STU-001</uni:studentId>
+      <uni:certificationType>ENROLLMENT_CERTIFICATE</uni:certificationType>
+      <uni:comment>Besoin pour dossier de bourse</uni:comment>
+    </uni:SubmitCertificationRequest>
+  </soapenv:Body>
+</soapenv:Envelope>

@@ -1,0 +1,165 @@
+services:
+  # ========================================================
+  # 1. SERVICE SOAP : University Administration
+  # ========================================================
+  soap-university-administration:
+    build:
+      context: ./projet_SOA-feature-admin-data-model/university-administration
+      dockerfile: Dockerfile
+    container_name: educampus-soap-admin
+    restart: unless-stopped
+    ports:
+      - "8083:8083"
+
+  # ========================================================
+  # 2. SERVICE REST : Academic Service + Base PostgreSQL
+  # ========================================================
+  postgres-academic:
+    image: postgres:16-alpine
+    container_name: educampus-postgres-academic
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: academic_db
+      POSTGRES_USER: academic
+      POSTGRES_PASSWORD: academic
+    ports:
+      - "5432:5432"
+    volumes:
+      - academic_data:/var/lib/postgresql/data
+      - ./projet_SOA-feature-openapi-students-courses/db:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U academic -d academic_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  rest-academic-service:
+    build:
+      context: ./projet_SOA-feature-openapi-students-courses/academic-service
+      dockerfile: Dockerfile
+    container_name: educampus-rest-academic
+    restart: unless-stopped
+    depends_on:
+      postgres-academic:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://postgres-academic:5432/academic_db
+      DB_USERNAME: academic
+      DB_PASSWORD: academic
+      SPRING_PROFILES_ACTIVE: prod
+      SERVER_PORT: 8081
+    ports:
+      - "8081:8081"
+
+  # ========================================================
+  # 3. SERVICE gRPC : Smart Space & Exam + Base PostgreSQL
+  # ========================================================
+  postgres-smartspace:
+    image: postgres:16-alpine
+    container_name: educampus-postgres-smartspace
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: smartspace_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"   # Mappé sur 5433 côté PC pour éviter tout conflit avec 5432
+    volumes:
+      - smartspace_data:/var/lib/postgresql/data
+      - ./projet_SOA-feature-grpc-examsession-examprogress/gRPC/src/main/resources/init-room.sql:/docker-entrypoint-initdb.d/01-init-room.sql:ro
+      - ./projet_SOA-feature-grpc-examsession-examprogress/gRPC/src/main/resources/init-exam.sql:/docker-entrypoint-initdb.d/02-init-exam.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d smartspace_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  grpc-smartspace-service:
+    build:
+      context: ./projet_SOA-feature-grpc-examsession-examprogress/gRPC
+      dockerfile: Dockerfile
+    container_name: educampus-grpc-smartspace
+    restart: unless-stopped
+    depends_on:
+      postgres-smartspace:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://postgres-smartspace:5432/smartspace_db
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      PORT: 8082
+      GRPC_PORT: 9090
+    ports:
+      - "8082:8082"   # REST Actuator & Web
+      - "9090:9090"   # gRPC HTTP/2 Server
+
+  # ========================================================
+  # 4. COORDINATION & MESSAGE BROKER : ZooKeeper & Kafka
+  # ========================================================
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.7.1
+    container_name: zookeeper
+    hostname: zookeeper
+    restart: unless-stopped
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_SERVER_ID: 1
+      KAFKA_OPTS: "-Dzookeeper.4lw.commands.whitelist=*"
+    ports:
+      - "${ZOOKEEPER_PORT:-2181}:2181"
+    healthcheck:
+      test: ["CMD-SHELL", "cub zk-ready localhost:2181 5"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 15s
+
+  kafka:
+    image: confluentinc/cp-kafka:7.7.1
+    container_name: kafka
+    hostname: kafka
+    restart: unless-stopped
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    ports:
+      - "${KAFKA_EXTERNAL_PORT:-9092}:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: INTERNAL://0.0.0.0:29092,EXTERNAL://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+    healthcheck:
+      test: ["CMD-SHELL", "cub kafka-ready -b kafka:29092 1 5"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # ========================================================
+  # 5. DISTRIBUTED TRACING : Jaeger
+  # ========================================================
+  jaeger:
+    image: jaegertracing/all-in-one:1.62.0
+    container_name: jaeger
+    restart: unless-stopped
+    ports:
+      - "${JAEGER_UI_PORT:-16686}:16686"
+      - "${JAEGER_OTLP_GRPC_PORT:-4317}:4317"
+      - "${JAEGER_OTLP_HTTP_PORT:-4318}:4318"
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+
+# ========================================================
+# VOLUMES PERSISTANTS
+# ========================================================
+volumes:
+  academic_data:
+  smartspace_data:
