@@ -1,0 +1,23 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: auth-service
+
+auth:
+  jwt:
+    # HS256 : au moins 32 caractères. En vrai : variable JWT_SECRET dans .env
+    secret: ${JWT_SECRET:dev-only-secret-change-me-please-32-chars-min}
+    expiration-minutes: ${JWT_EXPIRATION_MINUTES:15}
+  # Utilisateurs de DÉVELOPPEMENT uniquement (hachés en BCrypt au démarrage)
+  users:
+    - username: admin
+      password: admin123
+      roles: [ADMIN]
+    - username: teacher
+      password: teacher123
+      roles: [TEACHER]
+    - username: student
+      password: student123
+      roles: [STUDENT]

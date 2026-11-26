@@ -1,0 +1,23 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service
+          uri: ${AUTH_SERVICE_URL:http://localhost:8084}
+          predicates:
+            - Path=/auth/**
+        - id: academic-service
+          uri: ${ACADEMIC_SERVICE_URL:http://localhost:8081}
+          predicates:
+            - Path=/api/**,/swagger-ui.html,/swagger-ui/**,/v3/api-docs/**
+          filters:
+            - PreserveHostHeader
+
+# Même secret que auth-service (variable JWT_SECRET dans .env)
+jwt:
+  secret: ${JWT_SECRET:dev-only-secret-change-me-please-32-chars-min}
