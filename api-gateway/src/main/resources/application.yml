@@ -1,0 +1,33 @@
+server:
+  port: ${GATEWAY_PORT:8085}
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        # ========================================================
+        # 1. SERVICE D'AUTHENTIFICATION (REST)
+        # ========================================================
+        - id: auth-service
+          uri: ${AUTH_SERVICE_URL:http://localhost:8084}
+          predicates:
+            - Path=/auth/**
+
+        # ========================================================
+        # 2. SERVICE ACADÉMIQUE REST (Point d'entrée métier)
+        # Il orchestre en interne les appels vers :
+        #   - SOAP : University Administration (éligibilité, certifications)
+        #   - gRPC : Smart Space & Exam (salles, examens)
+        # ========================================================
+        - id: academic-service
+          uri: ${ACADEMIC_SERVICE_URL:http://localhost:8081}
+          predicates:
+            - Path=/api/**,/swagger-ui.html,/swagger-ui/**,/v3/api-docs/**
+          filters:
+            - PreserveHostHeader
+
+# Même secret que auth-service (variable JWT_SECRET dans .env)
+jwt:
+  secret: ${JWT_SECRET:dev-only-secret-change-me-please-32-chars-min}

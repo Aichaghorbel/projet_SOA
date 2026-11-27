@@ -157,6 +157,42 @@ services:
     environment:
       - COLLECTOR_OTLP_ENABLED=true
 
+  # ========================================================
+  # 6. AUTHENTICATION SERVICE : Auth Service
+  # ========================================================
+  auth-service:
+    build:
+      context: ./auth-service
+      dockerfile: Dockerfile
+    container_name: educampus-auth-service
+    restart: unless-stopped
+    ports:
+      - "8084:8084"
+    environment:
+      JWT_SECRET: ${JWT_SECRET:-dev-only-secret-change-me-please-32-chars-min}
+      JWT_EXPIRATION_MINUTES: ${JWT_EXPIRATION_MINUTES:-15}
+      SERVER_PORT: 8084
+
+  # ========================================================
+  # 7. POINT D'ENTRÉE UNIQUE : API Gateway
+  # ========================================================
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: educampus-api-gateway
+    restart: unless-stopped
+    depends_on:
+      - auth-service
+      - rest-academic-service
+    ports:
+      - "8085:8085"
+    environment:
+      GATEWAY_PORT: 8085
+      AUTH_SERVICE_URL: http://auth-service:8084
+      ACADEMIC_SERVICE_URL: http://rest-academic-service:8081
+      JWT_SECRET: ${JWT_SECRET:-dev-only-secret-change-me-please-32-chars-min}
+
 # ========================================================
 # VOLUMES PERSISTANTS
 # ========================================================
