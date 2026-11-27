@@ -24,7 +24,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
         MessageDispatcherServlet servlet = new MessageDispatcherServlet();
         servlet.setApplicationContext(context);
         servlet.setTransformWsdlLocations(true);
-        return new ServletRegistrationBean<>(servlet, "/ws/*", "/ws");
+        return new ServletRegistrationBean<>(servlet, "/ws/*");
     }
 
     /** WSDL genere a l'execution a partir du XSD : http://localhost:8083/ws/university-administration.wsdl */
