@@ -1,0 +1,389 @@
+<div class="content-container">
+  <!-- Toast -->
+  <div class="toast-alert" *ngIf="toastMessage">
+    <i class="fa-solid fa-circle-check"></i>
+    <span>{{ toastMessage }}</span>
+  </div>
+
+  <!-- Page Header -->
+  <div class="page-title-row">
+    <div class="page-title-block">
+      <h1>Administration & Scolarité</h1>
+      <p class="page-subtitle">Contrôle d'éligibilité et délivrance des attestations officielles de l'IIT Sfax.</p>
+    </div>
+
+    <div class="page-actions">
+      <button class="btn btn-primary" (click)="openNewRequest()">
+        <i class="fa-solid fa-plus"></i>
+        <span>Nouvelle Attestation</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Subnav Tabs -->
+  <div class="subnav-tabs">
+    <button class="subnav-tab-btn" [class.active]="activeTab === 'eligibility'" (click)="activeTab = 'eligibility'">
+      <i class="fa-solid fa-user-check"></i>
+      <span>Vérification d'Éligibilité</span>
+    </button>
+    <button class="subnav-tab-btn" [class.active]="activeTab === 'requests'" (click)="activeTab = 'requests'">
+      <i class="fa-solid fa-stamp"></i>
+      <span>Registre des Demandes</span>
+      <span class="subnav-tab-badge">{{ certificates.length }}</span>
+    </button>
+    <button class="subnav-tab-btn" [class.active]="activeTab === 'preview-doc'" (click)="activeTab = 'preview-doc'">
+      <i class="fa-solid fa-file-contract"></i>
+      <span>Attestation Officielle IIT</span>
+    </button>
+  </div>
+
+  <!-- ==================== TAB 1: ÉLIGIBILITÉ (SIMPLE & ÉPURÉ) ==================== -->
+  <div *ngIf="activeTab === 'eligibility'">
+    <!-- Single Simple Card: Search + Student Status -->
+    <div class="ui-card p-6 mb-4">
+      <div class="search-simple-row">
+        <div class="search-input-box">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input 
+            type="text" 
+            [(ngModel)]="searchQuery" 
+            placeholder="Saisissez le CIN (ex: 09876543) ou Matricule de l'étudiant..." 
+            class="form-control pl-search"
+            (keyup.enter)="runEligibilityCheck(searchQuery)">
+        </div>
+        <button class="btn btn-primary" (click)="runEligibilityCheck(searchQuery)" [disabled]="isVerifying">
+          <i class="fa-solid" [class.fa-spinner]="isVerifying" [class.fa-spin]="isVerifying" [class.fa-check]="!isVerifying"></i>
+          <span>Vérifier</span>
+        </button>
+      </div>
+
+      <!-- Result section when student is verified -->
+      <div class="student-result-simple mt-5" *ngIf="verificationReport">
+        <!-- Student Header Summary -->
+        <div class="student-simple-header">
+          <div class="student-simple-identity">
+            <img [src]="searchedStudent?.photoUrl" class="avatar-user-lg" alt="">
+            <div>
+              <div class="flex-align-gap">
+                <h2 class="student-simple-name">{{ verificationReport.fullName }}</h2>
+                <span class="status-chip success font-bold">
+                  <i class="fa-solid fa-check"></i> Dossier Éligible
+                </span>
+              </div>
+              <p class="student-simple-sub">
+                {{ verificationReport.filiere }} &bull; CIN : <strong>{{ verificationReport.cin }}</strong> &bull; Matricule : <span class="font-mono">{{ verificationReport.matricule }}</span>
+              </p>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" (click)="openNewRequest()">
+            <i class="fa-solid fa-file-circle-plus"></i>
+            <span>Délivrer une Attestation</span>
+          </button>
+        </div>
+
+        <!-- 4 Criteria in Clean Horizontal Grid -->
+        <div class="criteria-simple-grid mt-4">
+          <div class="criteria-card">
+            <div class="criteria-icon bg-green-subtle">
+              <i class="fa-solid fa-receipt text-success"></i>
+            </div>
+            <div class="criteria-text">
+              <span class="criteria-title">Frais de Scolarité</span>
+              <span class="criteria-status text-success"><i class="fa-solid fa-check"></i> En Règle</span>
+              <span class="criteria-desc">Quitus financier semestriel acquitté</span>
+            </div>
+          </div>
+
+          <div class="criteria-card">
+            <div class="criteria-icon bg-blue-subtle">
+              <i class="fa-solid fa-book-bookmark text-navy"></i>
+            </div>
+            <div class="criteria-text">
+              <span class="criteria-title">Bibliothèque IIT</span>
+              <span class="criteria-status text-success"><i class="fa-solid fa-check"></i> En Règle</span>
+              <span class="criteria-desc">Aucun document en retard</span>
+            </div>
+          </div>
+
+          <div class="criteria-card">
+            <div class="criteria-icon bg-purple-subtle">
+              <i class="fa-solid fa-scale-balanced text-purple"></i>
+            </div>
+            <div class="criteria-text">
+              <span class="criteria-title">Discipline</span>
+              <span class="criteria-status text-success"><i class="fa-solid fa-check"></i> Vierge</span>
+              <span class="criteria-desc">Aucune sanction académique</span>
+            </div>
+          </div>
+
+          <div class="criteria-card">
+            <div class="criteria-icon bg-gold-subtle">
+              <i class="fa-solid fa-award text-gold"></i>
+            </div>
+            <div class="criteria-text">
+              <span class="criteria-title">Prérequis ECTS</span>
+              <span class="criteria-status text-success"><i class="fa-solid fa-check"></i> Validé</span>
+              <span class="criteria-desc">120 / 120 Crédits ECTS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table of Issued Certificates for this student -->
+    <div class="data-table-card mt-4">
+      <div class="ui-card-header">
+        <div class="ui-card-title">
+          <i class="fa-solid fa-file-contract text-navy"></i>
+          <span>Attestations & Certifications de l'Étudiant</span>
+        </div>
+        <span class="badge-subtle">{{ certificates.length }} documents</span>
+      </div>
+      <table class="clean-table">
+        <thead>
+          <tr>
+            <th>Document</th>
+            <th>Numéro de Référence</th>
+            <th>Date d'Émission</th>
+            <th>Format</th>
+            <th>Statut</th>
+            <th class="text-right">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cert of certificates">
+            <td>
+              <div class="cell-doc-title">
+                <i class="fa-solid fa-file-pdf text-danger"></i>
+                <strong>{{ cert.documentType }}</strong>
+              </div>
+            </td>
+            <td>
+              <span class="font-mono text-bold text-navy">{{ cert.referenceNumber }}</span>
+            </td>
+            <td>{{ cert.dateRequested }}</td>
+            <td>{{ cert.deliveryFormat }}</td>
+            <td>
+              <span class="status-chip success">{{ cert.status }}</span>
+            </td>
+            <td class="text-right">
+              <button class="btn btn-secondary btn-sm" (click)="previewDocument(cert)">
+                <i class="fa-solid fa-eye"></i> Aperçu Officiel
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 2: DEMANDES DE CERTIFICATIONS ==================== -->
+  <div *ngIf="activeTab === 'requests'">
+    <div class="data-table-card">
+      <div class="ui-card-header">
+        <div class="ui-card-title">
+          <i class="fa-solid fa-stamp text-navy"></i>
+          <span>Registre Général des Demandes de Certifications</span>
+        </div>
+        <button class="btn btn-primary btn-sm" (click)="openNewRequest()">
+          <i class="fa-solid fa-plus"></i> Nouvelle Demande
+        </button>
+      </div>
+      <table class="clean-table">
+        <thead>
+          <tr>
+            <th>Référence</th>
+            <th>Étudiant</th>
+            <th>Document Demandé</th>
+            <th>Date</th>
+            <th>Format</th>
+            <th>Statut</th>
+            <th class="text-right">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cert of certificates">
+            <td>
+              <span class="font-mono text-bold text-navy">{{ cert.referenceNumber }}</span>
+            </td>
+            <td>
+              <div class="cell-primary-text">{{ cert.studentName }}</div>
+              <div class="cell-sub-text">CIN: {{ cert.studentCin }} &bull; {{ cert.matricule }}</div>
+            </td>
+            <td><strong>{{ cert.documentType }}</strong></td>
+            <td>{{ cert.dateRequested }}</td>
+            <td>
+              <span class="format-chip"><i class="fa-solid fa-file-pdf text-danger"></i> {{ cert.deliveryFormat }}</span>
+            </td>
+            <td>
+              <span class="status-chip success">{{ cert.status }}</span>
+            </td>
+            <td class="text-right">
+              <button class="btn btn-secondary btn-sm" (click)="previewDocument(cert)">
+                <i class="fa-solid fa-eye"></i> Aperçu
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 3: PRÉVISUALISATION & IMPRESSION ==================== -->
+  <div *ngIf="activeTab === 'preview-doc'">
+    <div class="sheet-action-toolbar mb-4">
+      <div class="sheet-info-txt">
+        <i class="fa-solid fa-stamp text-gold"></i>
+        <span>Document Officiel Universitaire délivré par l'IIT Sfax</span>
+      </div>
+      <div class="flex-align-gap">
+        <button class="btn btn-primary" (click)="printCertificate()">
+          <i class="fa-solid fa-print"></i>
+          <span>Imprimer</span>
+        </button>
+        <button class="btn btn-accent" (click)="showToast('Attestation officielle téléchargée.')">
+          <i class="fa-solid fa-download"></i>
+          <span>Télécharger PDF</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Official Printable Sheet -->
+    <div class="official-sheet ui-card" *ngIf="selectedCertificateForPreview">
+      <div class="sheet-top-header">
+        <div class="sheet-left">
+          <div class="tun-rep">RÉPUBLIQUE TUNISIENNE</div>
+          <div class="tun-min">MINISTÈRE DE L'ENSEIGNEMENT SUPÉRIEUR<br>ET DE LA RECHERCHE SCIENTIFIQUE</div>
+          <div class="univ-heading">Institut International de Technologie - Sfax</div>
+        </div>
+
+        <div class="sheet-center">
+          <img src="assets/iit-1536x970-1.png" alt="Logo IIT" class="sheet-logo-img">
+        </div>
+
+        <div class="sheet-right">
+          <div class="ref-title">RÉFÉRENCE :</div>
+          <div class="ref-code font-mono">{{ selectedCertificateForPreview.referenceNumber }}</div>
+          <div class="ref-year">Année : {{ selectedCertificateForPreview.academicYear }}</div>
+        </div>
+      </div>
+
+      <div class="gold-line-separator"></div>
+
+      <div class="sheet-title-center">
+        <h2>{{ selectedCertificateForPreview.documentType.toUpperCase() }}</h2>
+        <span class="sheet-sub">DIRECTION DE LA SCOLARITÉ ET DES EXAMENS</span>
+      </div>
+
+      <div class="sheet-text-content">
+        <p>
+          Le Directeur Général de l'<strong>Institut International de Technologie (IIT Sfax)</strong>, 
+          établissement d'enseignement supérieur agréé par l'État, atteste par la présente que :
+        </p>
+
+        <div class="student-highlight-box mt-3 mb-3">
+          <div class="sh-item">
+            <span class="sh-k">L'étudiant(e) :</span>
+            <span class="sh-v font-bold">{{ selectedCertificateForPreview.studentName.toUpperCase() }}</span>
+          </div>
+          <div class="sh-item">
+            <span class="sh-k">Titulaire de la CIN N° :</span>
+            <span class="sh-v font-mono">{{ selectedCertificateForPreview.studentCin }}</span>
+          </div>
+          <div class="sh-item">
+            <span class="sh-k">Matricule :</span>
+            <span class="sh-v font-mono font-bold">{{ selectedCertificateForPreview.matricule }}</span>
+          </div>
+          <div class="sh-item">
+            <span class="sh-k">Filière d'Étude :</span>
+            <span class="sh-v">{{ selectedCertificateForPreview.branch }}</span>
+          </div>
+          <div class="sh-item">
+            <span class="sh-k">Niveau Académique :</span>
+            <span class="sh-v">{{ selectedCertificateForPreview.level }}</span>
+          </div>
+          <div class="sh-item">
+            <span class="sh-k">Année Universitaire :</span>
+            <span class="sh-v">{{ selectedCertificateForPreview.academicYear }}</span>
+          </div>
+        </div>
+
+        <p class="mt-3">
+          Est régulièrement inscrit(e) sur les registres universitaires de l'IIT et satisfait à l'ensemble 
+          des obligations pédagogiques et administratives requises par les règlements intérieurs de l'institut.
+        </p>
+
+        <p>
+          La présente attestation est délivrée à l'intéressé(e) pour servir et valoir ce que de droit.
+        </p>
+      </div>
+
+      <div class="sheet-bottom-signature mt-6">
+        <div class="qr-box">
+          <i class="fa-solid fa-qrcode qr-icon"></i>
+          <span class="qr-caption">{{ selectedCertificateForPreview.qrVerificationUrl }}</span>
+        </div>
+
+        <div class="stamp-signature-area">
+          <div class="date-mention">Fait à Sfax, le {{ selectedCertificateForPreview.dateRequested }}</div>
+          <div class="director-mention">Le Directeur Général de l'IIT</div>
+
+          <div class="circular-rubber-stamp">
+            <span class="stamp-txt">INSTITUT INTERNATIONAL DE TECHNOLOGIE</span>
+            <span class="stamp-core">&#9733; SCOLARITÉ CENTRALE &#9733;</span>
+          </div>
+
+          <div class="signature-drawing">Pr. Direction Académique</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW REQUEST MODAL -->
+  <div class="modal-overlay" *ngIf="showNewRequestModal" (click)="closeNewRequest()">
+    <div class="modal-window" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-file-circle-plus text-navy"></i>
+          <span>Émettre une Attestation Officielle</span>
+        </div>
+        <button class="modal-close-btn" (click)="closeNewRequest()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Sélectionner l'Étudiant</label>
+          <select [(ngModel)]="newRequestForm.studentCin" class="form-control">
+            <option *ngFor="let s of students" [value]="s.cin">
+              {{ s.firstName }} {{ s.lastName }} (CIN: {{ s.cin }} - {{ s.branch }})
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group mt-3">
+          <label class="form-label">Type de Document</label>
+          <select [(ngModel)]="newRequestForm.documentType" class="form-control">
+            <option value="Certificat de Scolarité">Certificat de Scolarité</option>
+            <option value="Attestation de Réussite">Attestation de Réussite</option>
+            <option value="Relevé de Notes Officiel">Relevé de Notes Officiel</option>
+            <option value="Attestation d'Inscription">Attestation d'Inscription</option>
+          </select>
+        </div>
+
+        <div class="form-group mt-3">
+          <label class="form-label">Format</label>
+          <select [(ngModel)]="newRequestForm.deliveryFormat" class="form-control">
+            <option value="PDF Officiel avec Signature & Cachet">PDF Officiel avec Signature & Cachet</option>
+            <option value="Version Papier">Version Papier à retirer au guichet</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeNewRequest()">Annuler</button>
+        <button class="btn btn-primary" (click)="submitCertificateRequest()">
+          <i class="fa-solid fa-check"></i> Émettre le Document
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

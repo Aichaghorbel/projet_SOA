@@ -1,0 +1,414 @@
+.filter-bar {
+  padding: 1rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.search-input-box {
+  position: relative;
+  flex: 1;
+  min-width: 260px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-subtle);
+  font-size: 0.85rem;
+}
+
+.pl-search {
+  padding-left: 2.25rem;
+}
+
+.filter-select-box {
+  min-width: 220px;
+}
+
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.avatar-user {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border);
+}
+
+.cell-primary-text {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.cell-sub-text {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.text-navy {
+  color: var(--iit-navy);
+}
+
+.score-badge {
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-app);
+  color: var(--text-secondary);
+}
+
+.score-badge.high {
+  background: var(--success-bg);
+  color: var(--success-text);
+}
+
+.final-score-badge {
+  font-weight: 800;
+  color: var(--iit-navy);
+  background-color: var(--iit-navy-light);
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-sm);
+}
+
+.text-right {
+  text-align: right;
+}
+
+.cards-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.25rem;
+}
+
+.course-box {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.course-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.65rem;
+}
+
+.course-code-badge {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  background-color: var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-sm);
+}
+
+.course-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.35rem;
+}
+
+.course-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+  margin-bottom: 1rem;
+}
+
+.course-meta-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.course-meta-rows i {
+  color: var(--text-subtle);
+  width: 16px;
+}
+
+.capacity-section {
+  margin-top: auto;
+  margin-bottom: 0.75rem;
+}
+
+.capacity-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 0.3rem;
+}
+
+.progress-bar-track {
+  height: 6px;
+  background-color: var(--border-subtle);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: var(--iit-navy);
+  border-radius: var(--radius-full);
+}
+
+.w-full {
+  width: 100%;
+}
+
+.flex-align-gap {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.form-label-inline {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.select-auto {
+  width: auto;
+  min-width: 220px;
+}
+
+.day-pills-row {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.day-chip {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.day-chip.active {
+  background-color: var(--iit-navy);
+  color: #ffffff;
+  border-color: var(--iit-navy);
+}
+
+.timetable-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+  gap: 1.25rem;
+}
+
+.tt-card {
+  padding: 1.25rem;
+  border-left: 3px solid var(--iit-navy);
+}
+
+.tt-top-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.65rem;
+}
+
+.day-pill {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--iit-navy);
+}
+
+.time-lbl {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.type-pill {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.1rem 0.45rem;
+  border-radius: var(--radius-sm);
+  background: var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+.type-cours { background: var(--iit-navy-light); color: var(--iit-navy); }
+.type-tp { background: var(--success-bg); color: var(--success-text); }
+
+.tt-course-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.2rem;
+}
+
+.tt-code {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.tt-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.tt-details i {
+  color: var(--text-subtle);
+  width: 16px;
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.profile-summary {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar-lg {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+}
+
+.matricule-tag {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--iit-navy);
+}
+
+.profile-sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+}
+
+.info-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.info-item {
+  background: var(--bg-app);
+  padding: 0.75rem 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.info-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  display: block;
+}
+
+.info-val {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.toast-alert {
+  position: fixed;
+  top: 75px;
+  right: 25px;
+  background: #047857;
+  color: white;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  z-index: 3000;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .search-input-box {
+    min-width: min(100%, 260px);
+  }
+
+  .filter-select-box,
+  .select-auto {
+    min-width: min(100%, 220px);
+  }
+
+  .day-pills-row {
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+  }
+
+  .day-chip {
+    flex: 0 0 auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .filter-bar {
+    align-items: stretch;
+  }
+
+  .filter-bar > *,
+  .filter-select-box,
+  .filter-select-box .form-control,
+  .search-input-box,
+  .select-auto {
+    width: 100%;
+  }
+
+  .form-grid-2,
+  .info-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-summary {
+    align-items: flex-start;
+  }
+
+  .toast-alert {
+    top: 0.75rem;
+    right: 0.75rem;
+    left: 0.75rem;
+  }
+}

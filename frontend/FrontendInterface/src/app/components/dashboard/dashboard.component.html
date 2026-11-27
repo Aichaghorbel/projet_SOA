@@ -1,0 +1,195 @@
+<div class="content-container">
+  <!-- Page Header -->
+  <div class="page-title-row">
+    <div class="page-title-block">
+      <h1>Tableau de Bord Général</h1>
+      <p class="page-subtitle">Plateforme universitaire centralisée EduCampus &bull; Institut International de Technologie</p>
+    </div>
+
+    <div class="page-actions">
+      <a routerLink="/academic" class="btn btn-primary">
+        <i class="fa-solid fa-graduation-cap"></i>
+        <span>Gestion Académique</span>
+      </a>
+      <a routerLink="/smart-space" class="btn btn-secondary">
+        <i class="fa-solid fa-door-open"></i>
+        <span>Réserver une Salle</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Row 1: 4 Clean KPI Cards -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-icon-box bg-blue">
+        <i class="fa-solid fa-user-graduate"></i>
+      </div>
+      <div class="kpi-data">
+        <span class="kpi-value">1,450+</span>
+        <span class="kpi-label">Étudiants Répertoriés</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon-box bg-green">
+        <i class="fa-solid fa-door-open"></i>
+      </div>
+      <div class="kpi-data">
+        <span class="kpi-value">{{ availableRoomsCount }} / {{ rooms.length }}</span>
+        <span class="kpi-label">Salles Libres</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon-box bg-gold">
+        <i class="fa-solid fa-book-bookmark"></i>
+      </div>
+      <div class="kpi-data">
+        <span class="kpi-value">{{ courses.length }} Cours</span>
+        <span class="kpi-label">Modules Actifs</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon-box bg-purple">
+        <i class="fa-solid fa-certificate"></i>
+      </div>
+      <div class="kpi-data">
+        <span class="kpi-value">Conforme</span>
+        <span class="kpi-label">Statut Administratif</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 2: 2 Column Layout (60% / 40%) -->
+  <div class="dashboard-main-grid mt-4">
+    <!-- Left Column: The 3 Core Responsibilities Cards -->
+    <div class="main-col-left">
+      <div class="ui-card">
+        <div class="ui-card-header">
+          <div class="ui-card-title">
+            <i class="fa-solid fa-layer-group text-gold"></i>
+            <span>Services Majeurs d'EduCampus</span>
+          </div>
+          <span class="status-chip success">Opérationnel</span>
+        </div>
+
+        <div class="ui-card-body pillars-list">
+          <!-- Pillar 1: Academic Service -->
+          <div class="pillar-row">
+            <div class="pillar-marker marker-blue"></div>
+            <div class="pillar-content">
+              <div class="pillar-head-line">
+                <h3>Gestion Académique & Cours</h3>
+                <span class="badge-subtle">Pôle Études</span>
+              </div>
+              <p class="pillar-description">
+                Gérer les étudiants, les cours, les inscriptions, les emplois du temps, les examens et les résultats.
+              </p>
+              <div class="pillar-quick-tags">
+                <span><i class="fa-solid fa-check text-success"></i> Profils étudiants</span>
+                <span><i class="fa-solid fa-check text-success"></i> Inscription aux matières</span>
+                <span><i class="fa-solid fa-check text-success"></i> Relevés de notes</span>
+              </div>
+            </div>
+            <a routerLink="/academic" class="btn btn-secondary btn-sm" title="Ouvrir le service académique">
+              <span>Accéder</span> <i class="fa-solid fa-chevron-right"></i>
+            </a>
+          </div>
+
+          <!-- Pillar 2: Smart Space & Exam -->
+          <div class="pillar-row">
+            <div class="pillar-marker marker-green"></div>
+            <div class="pillar-content">
+              <div class="pillar-head-line">
+                <h3>Espaces, Salles & Examens en Ligne</h3>
+                <span class="badge-subtle">Pôle Espaces</span>
+              </div>
+              <p class="pillar-description">
+                Gérer les réservations de salles, vérifier les disponibilités, corriger automatiquement les examens et transmettre leur progression.
+              </p>
+              <div class="pillar-quick-tags">
+                <span><i class="fa-solid fa-check text-success"></i> Salles sans conflit</span>
+                <span><i class="fa-solid fa-check text-success"></i> Évaluations en ligne</span>
+                <span><i class="fa-solid fa-check text-success"></i> Correction instantanée</span>
+              </div>
+            </div>
+            <a routerLink="/smart-space" class="btn btn-secondary btn-sm" title="Ouvrir le service des espaces et examens">
+              <span>Accéder</span> <i class="fa-solid fa-chevron-right"></i>
+            </a>
+          </div>
+
+          <!-- Pillar 3: Administration -->
+          <div class="pillar-row">
+            <div class="pillar-marker marker-purple"></div>
+            <div class="pillar-content">
+              <div class="pillar-head-line">
+                <h3>Administration Universitaire & Certifications</h3>
+                <span class="badge-subtle">Pôle Scolarité</span>
+              </div>
+              <p class="pillar-description">
+                Communiquer avec le système administratif de l'université pour vérifier le statut des étudiants, valider leur éligibilité et transmettre les demandes officielles de certification.
+              </p>
+              <div class="pillar-quick-tags">
+                <span><i class="fa-solid fa-check text-success"></i> Vérification d'éligibilité</span>
+                <span><i class="fa-solid fa-check text-success"></i> Quitus financier</span>
+                <span><i class="fa-solid fa-check text-success"></i> Attestations signées</span>
+              </div>
+            </div>
+            <a routerLink="/administration" class="btn btn-secondary btn-sm" title="Ouvrir le service administratif">
+              <span>Accéder</span> <i class="fa-solid fa-chevron-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Campus Highlight & Recent Activities -->
+    <div class="main-col-right">
+      <!-- Campus Visual Card -->
+      <div class="ui-card mb-4">
+        <div class="campus-thumb-wrap">
+          <img src="assets/IIT.webp" alt="Campus IIT Sfax" class="campus-hero-thumb">
+          <div class="campus-thumb-meta">
+            <h4>Institut International de Technologie</h4>
+            <p><i class="fa-solid fa-location-dot"></i> Route Mharza Km 1.5, Sfax - Tunisie</p>
+          </div>
+        </div>
+        <div class="campus-micro-gallery">
+          <div class="micro-photo-box">
+            <img src="assets/images (1).jpg" alt="Étudiants">
+            <span>Vie Étudiante</span>
+          </div>
+          <div class="micro-photo-box">
+            <img src="assets/images.jpg" alt="Laboratoires">
+            <span>Laboratoires</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activities Feed -->
+      <div class="ui-card">
+        <div class="ui-card-header">
+          <div class="ui-card-title">
+            <i class="fa-solid fa-clock-rotate-left text-muted"></i>
+            <span>Activités Récentes</span>
+          </div>
+        </div>
+        <div class="ui-card-body activities-list-compact">
+          <div class="activity-compact-item" *ngFor="let act of recentActivities">
+            <div class="act-dot" [ngClass]="act.colorClass">
+              <i class="fa-solid" [ngClass]="act.icon"></i>
+            </div>
+            <div class="act-text">
+              <div class="act-title-line">
+                <span class="act-heading">{{ act.title }}</span>
+                <span class="act-time-lbl">{{ act.time }}</span>
+              </div>
+              <p class="act-summary">{{ act.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

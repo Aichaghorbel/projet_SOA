@@ -1,0 +1,39 @@
+.clean-footer {
+  border-top: 1px solid var(--border);
+  background-color: #ffffff;
+  padding: 1.25rem 2rem;
+  margin-top: auto;
+}
+
+.footer-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.footer-copy strong {
+  color: var(--iit-navy);
+}
+
+.footer-links-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.footer-links-row a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.15s ease;
+}
+
+.footer-links-row a:hover {
+  color: var(--iit-navy);
+}

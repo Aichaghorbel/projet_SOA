@@ -1,0 +1,460 @@
+/* ==========================================================================
+   Administration Component - Simple, Clean & Professional
+   ========================================================================== */
+
+.search-simple-row {
+  display: flex;
+  gap: 0.75rem;
+  max-width: 620px;
+}
+
+/* Spacing utilities used in this template are defined here because no CSS framework is loaded. */
+.ui-card.p-6 {
+  padding: 1.5rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.mt-5 {
+  margin-top: 1.5rem;
+}
+
+.search-input-box {
+  position: relative;
+  flex: 1;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-subtle);
+  font-size: 0.85rem;
+}
+
+.pl-search {
+  padding-left: 2.25rem;
+}
+
+/* Student Simple Header */
+.student-simple-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.student-simple-identity {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar-user-lg {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--iit-navy);
+  flex-shrink: 0;
+}
+
+.student-simple-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.student-simple-sub {
+  font-size: 0.825rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+}
+
+.flex-align-gap {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+/* 4 Simple Criteria Grid */
+.criteria-simple-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.criteria-card {
+  background: var(--bg-app);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.criteria-card:hover {
+  background-color: #ffffff;
+  border-color: #cbd5e1;
+}
+
+.criteria-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.bg-green-subtle { background-color: var(--success-bg); }
+.bg-blue-subtle { background-color: var(--iit-navy-light); }
+.bg-purple-subtle { background-color: #f3e8ff; }
+.bg-gold-subtle { background-color: var(--iit-gold-light); }
+
+.criteria-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.criteria-title {
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.criteria-status {
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin: 0.15rem 0;
+}
+
+.criteria-desc {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+/* Document Table Row */
+.cell-doc-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.text-danger { color: #dc2626; }
+.text-purple { color: #8b5cf6; }
+
+/* Official Printable Sheet */
+.sheet-action-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--surface);
+  padding: 0.85rem 1.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.sheet-info-txt {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.official-sheet {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 3rem 3.5rem;
+  background: #ffffff;
+  color: #1e293b;
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-sans);
+}
+
+.sheet-top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.tun-rep {
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.tun-min {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+.univ-heading {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--iit-navy);
+  margin-top: 2px;
+}
+
+.sheet-logo-img {
+  height: 52px;
+  width: auto;
+}
+
+.sheet-right {
+  text-align: right;
+}
+
+.ref-title {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.ref-code {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--iit-navy);
+}
+
+.ref-year {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.gold-line-separator {
+  height: 2px;
+  background: linear-gradient(to right, var(--iit-navy), var(--iit-gold), var(--iit-navy));
+  margin-bottom: 1.75rem;
+}
+
+.sheet-title-center {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.sheet-title-center h2 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--iit-navy-dark);
+}
+
+.sheet-sub {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+}
+
+.sheet-text-content {
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.student-highlight-box {
+  background: var(--bg-app);
+  border-left: 3px solid var(--iit-navy);
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.sh-item {
+  display: flex;
+  gap: 0.85rem;
+}
+
+.sh-k {
+  width: 180px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.sh-v {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.sheet-bottom-signature {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 2.5rem;
+}
+
+.qr-box {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.qr-icon {
+  font-size: 2.5rem;
+  color: var(--text-primary);
+}
+
+.qr-caption {
+  font-size: 0.68rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+}
+
+.stamp-signature-area {
+  text-align: center;
+  width: 220px;
+}
+
+.date-mention {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.director-mention {
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.circular-rubber-stamp {
+  width: 90px;
+  height: 90px;
+  border: 2px dashed #dc2626;
+  border-radius: 50%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #dc2626;
+  transform: rotate(-10deg);
+  opacity: 0.85;
+}
+
+.stamp-txt {
+  font-size: 0.42rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.stamp-core {
+  font-size: 0.48rem;
+  font-weight: 800;
+  margin-top: 2px;
+}
+
+.signature-drawing {
+  margin-top: 0.5rem;
+  font-family: 'Brush Script MT', cursive;
+  font-size: 1.25rem;
+  color: var(--iit-navy);
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .official-sheet, .official-sheet * {
+    visibility: visible;
+  }
+  .official-sheet {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 1.5rem;
+    box-shadow: none;
+    border: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .criteria-simple-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 640px) {
+  .criteria-simple-grid { grid-template-columns: 1fr; }
+  .student-simple-header { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 768px) {
+  .official-sheet {
+    padding: 2rem 1.5rem;
+  }
+
+  .sheet-bottom-signature {
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 560px) {
+  .search-simple-row,
+  .sheet-action-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-simple-row,
+  .search-simple-row .btn,
+  .search-simple-row .form-control {
+    width: 100%;
+  }
+
+  .official-sheet {
+    padding: 1.25rem 1rem;
+  }
+
+  .sheet-top-header {
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .sheet-logo-img {
+    height: 38px;
+  }
+
+  .sh-item {
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .sh-k {
+    width: auto;
+  }
+
+  .stamp-signature-area {
+    width: 100%;
+  }
+
+  .toast-alert {
+    top: 0.75rem;
+    right: 0.75rem;
+    left: 0.75rem;
+  }
+}

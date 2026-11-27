@@ -1,0 +1,153 @@
+.topbar-container {
+  height: 64px;
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-trail {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.univ-crumb {
+  color: var(--text-muted);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.text-gold {
+  color: var(--iit-gold);
+}
+
+.crumb-separator {
+  color: var(--text-subtle);
+}
+
+.active-crumb {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.date-chip {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: var(--bg-app);
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.topbar-badge-status {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--success-text);
+  background-color: var(--success-bg);
+  border: 1px solid var(--success-border);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+}
+
+.status-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--success-text);
+}
+
+.topbar-avatar-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.2rem 0.65rem 0.2rem 0.3rem;
+  border-radius: var(--radius-full);
+  background-color: var(--bg-app);
+  border: 1px solid var(--border);
+}
+
+.pill-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: var(--iit-navy);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.pill-name {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+  .topbar-container {
+    height: auto;
+    min-height: 56px;
+    padding: 0.65rem 1rem;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .topbar-right {
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .topbar-container {
+    align-items: flex-start;
+  }
+
+  .breadcrumb-trail {
+    flex-wrap: wrap;
+    font-size: 0.78rem;
+  }
+
+  .topbar-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .date-chip,
+  .topbar-badge-status {
+    font-size: 0.7rem;
+  }
+
+  .pill-name {
+    display: none;
+  }
+}

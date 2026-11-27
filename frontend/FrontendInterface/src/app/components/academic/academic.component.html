@@ -1,0 +1,352 @@
+<div class="content-container">
+  <!-- Toast notification -->
+  <div class="toast-alert" *ngIf="notificationMessage">
+    <i class="fa-solid fa-circle-check"></i>
+    <span>{{ notificationMessage }}</span>
+  </div>
+
+  <!-- Page Header -->
+  <div class="page-title-row">
+    <div class="page-title-block">
+      <h1>Gestion Académique & Pédagogique</h1>
+      <p class="page-subtitle">Gérer les étudiants, les cours, les inscriptions, les emplois du temps et les résultats.</p>
+    </div>
+
+    <div class="page-actions">
+      <button class="btn btn-primary" (click)="openAddStudent()">
+        <i class="fa-solid fa-user-plus"></i>
+        <span>Inscrire un Étudiant</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Ergonomic Subnav Tabs -->
+  <div class="subnav-tabs">
+    <button class="subnav-tab-btn" [class.active]="activeTab === 'students'" (click)="activeTab = 'students'">
+      <i class="fa-solid fa-user-graduate"></i>
+      <span>Étudiants</span>
+      <span class="subnav-tab-badge">{{ students.length }}</span>
+    </button>
+    <button class="subnav-tab-btn" [class.active]="activeTab === 'courses'" (click)="activeTab = 'courses'">
+      <i class="fa-solid fa-book-bookmark"></i>
+      <span>Cours & Inscriptions</span>
+      <span class="subnav-tab-badge">{{ courses.length }}</span>
+    </button>
+    <button class="subnav-tab-btn" [class.active]="activeTab === 'timetable'" (click)="activeTab = 'timetable'">
+      <i class="fa-solid fa-calendar-days"></i>
+      <span>Emplois du Temps</span>
+    </button>
+    <button class="subnav-tab-btn" [class.active]="activeTab === 'grades'" (click)="activeTab = 'grades'">
+      <i class="fa-solid fa-square-poll-vertical"></i>
+      <span>Examens & Résultats</span>
+    </button>
+  </div>
+
+  <!-- ==================== TAB 1: ÉTUDIANTS ==================== -->
+  <div *ngIf="activeTab === 'students'">
+    <!-- Filter Bar -->
+    <div class="filter-bar ui-card mb-4">
+      <div class="search-input-box">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input 
+          type="text" 
+          [(ngModel)]="studentSearch" 
+          placeholder="Rechercher par nom, matricule ou CIN..." 
+          class="form-control pl-search">
+      </div>
+
+      <div class="filter-select-box">
+        <select [(ngModel)]="selectedBranch" class="form-control">
+          <option value="ALL">Toutes les Filières</option>
+          <option value="Génie Informatique">Génie Informatique (GI)</option>
+          <option value="Télécoms">Télécoms & Réseaux (TR)</option>
+          <option value="Mécatronique">Mécatronique & Robotique</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Clean Data Table -->
+    <div class="data-table-card">
+      <table class="clean-table">
+        <thead>
+          <tr>
+            <th>Étudiant</th>
+            <th>Matricule & CIN</th>
+            <th>Filière & Niveau</th>
+            <th>Crédits ECTS</th>
+            <th>Moyenne</th>
+            <th>Statut</th>
+            <th class="text-right">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let s of filteredStudents">
+            <td>
+              <div class="user-cell">
+                <img [src]="s.photoUrl" [alt]="s.firstName" class="avatar-user">
+                <div>
+                  <div class="cell-primary-text">{{ s.firstName }} {{ s.lastName }}</div>
+                  <div class="cell-sub-text">{{ s.email }}</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="font-mono text-bold text-navy">{{ s.matricule }}</span>
+              <div class="cell-sub-text">CIN: {{ s.cin }}</div>
+            </td>
+            <td>
+              <div class="cell-primary-text">{{ s.branch }}</div>
+              <div class="cell-sub-text">{{ s.level }}</div>
+            </td>
+            <td>
+              <span class="cell-primary-text">{{ s.creditsAcquired }}</span> / 120
+            </td>
+            <td>
+              <span class="score-badge" [class.high]="s.gpa >= 16">{{ s.gpa }} / 20</span>
+            </td>
+            <td>
+              <span class="status-chip" [class.success]="s.eligibilityStatus === 'VALIDE'" [class.warning]="s.eligibilityStatus === 'EN_ATTENTE'">
+                {{ s.eligibilityStatus === 'VALIDE' ? 'Inscrit & Conforme' : 'En Attente' }}
+              </span>
+            </td>
+            <td class="text-right">
+              <button class="btn btn-secondary btn-sm" (click)="viewStudent(s)">
+                <i class="fa-solid fa-address-card"></i> Détails
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 2: COURS & INSCRIPTIONS ==================== -->
+  <div *ngIf="activeTab === 'courses'">
+    <div class="cards-grid-3">
+      <div class="ui-card course-box" *ngFor="let c of courses">
+        <div class="course-top">
+          <span class="course-code-badge">{{ c.code }}</span>
+          <span class="status-chip navy">{{ c.credits }} ECTS</span>
+        </div>
+
+        <h3 class="course-title">{{ c.title }}</h3>
+        <p class="course-desc">{{ c.description }}</p>
+
+        <div class="course-meta-rows">
+          <div><i class="fa-solid fa-chalkboard-user"></i> {{ c.teacher }}</div>
+          <div><i class="fa-solid fa-location-dot"></i> {{ c.room }}</div>
+          <div><i class="fa-regular fa-clock"></i> {{ c.scheduleTime }}</div>
+        </div>
+
+        <div class="capacity-section">
+          <div class="capacity-labels">
+            <span>Places occupées</span>
+            <span><strong>{{ c.enrolledCount }}</strong> / {{ c.maxCapacity }}</span>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" [style.width.%]="(c.enrolledCount / c.maxCapacity) * 100"></div>
+          </div>
+        </div>
+
+        <button 
+          class="btn w-full mt-3" 
+          [class.btn-secondary]="c.isEnrolled" 
+          [class.btn-primary]="!c.isEnrolled"
+          (click)="toggleEnroll(c.id)">
+          <i class="fa-solid" [class.fa-check]="c.isEnrolled" [class.fa-plus]="!c.isEnrolled"></i>
+          <span>{{ c.isEnrolled ? 'Inscrit (Cliquez pour désinscrire)' : 'S\'inscrire à ce cours' }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 3: EMPLOIS DU TEMPS ==================== -->
+  <div *ngIf="activeTab === 'timetable'">
+    <div class="filter-bar ui-card mb-4">
+      <div class="flex-align-gap">
+        <label class="form-label-inline"><i class="fa-solid fa-users"></i> Promotion :</label>
+        <select [(ngModel)]="selectedGroup" class="form-control select-auto">
+          <option value="3ème Année GI - Groupe 1">3ème Année Génie Info - Gr 1</option>
+          <option value="ALL">Tous les Groupes</option>
+        </select>
+      </div>
+
+      <div class="day-pills-row">
+        <button class="day-chip" [class.active]="selectedDay === 'ALL'" (click)="selectedDay = 'ALL'">Tous</button>
+        <button class="day-chip" [class.active]="selectedDay === 'Lundi'" (click)="selectedDay = 'Lundi'">Lun</button>
+        <button class="day-chip" [class.active]="selectedDay === 'Mardi'" (click)="selectedDay = 'Mardi'">Mar</button>
+        <button class="day-chip" [class.active]="selectedDay === 'Mercredi'" (click)="selectedDay = 'Mercredi'">Mer</button>
+        <button class="day-chip" [class.active]="selectedDay === 'Jeudi'" (click)="selectedDay = 'Jeudi'">Jeu</button>
+        <button class="day-chip" [class.active]="selectedDay === 'Vendredi'" (click)="selectedDay = 'Vendredi'">Ven</button>
+      </div>
+    </div>
+
+    <div class="timetable-cards-grid">
+      <div class="ui-card tt-card" *ngFor="let item of filteredTimetable">
+        <div class="tt-top-line">
+          <span class="day-pill">{{ item.day }}</span>
+          <span class="time-lbl"><i class="fa-regular fa-clock"></i> {{ item.timeSlot }}</span>
+          <span class="type-pill" [class.type-cours]="item.type === 'Cours'" [class.type-tp]="item.type === 'TP'">{{ item.type }}</span>
+        </div>
+
+        <h4 class="tt-course-title">{{ item.courseTitle }}</h4>
+        <div class="tt-code font-mono">{{ item.courseCode }}</div>
+
+        <div class="tt-details">
+          <div><i class="fa-solid fa-user-tie"></i> {{ item.teacher }}</div>
+          <div><i class="fa-solid fa-door-open"></i> {{ item.room }}</div>
+          <div><i class="fa-solid fa-users"></i> {{ item.group }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 4: EXAMENS & RÉSULTATS ==================== -->
+  <div *ngIf="activeTab === 'grades'">
+    <div class="data-table-card">
+      <table class="clean-table">
+        <thead>
+          <tr>
+            <th>Étudiant</th>
+            <th>Matière</th>
+            <th>Examen</th>
+            <th>DS</th>
+            <th>TP</th>
+            <th>Moyenne Finale</th>
+            <th>Statut</th>
+            <th>Session</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let g of grades">
+            <td>
+              <div class="cell-primary-text">{{ g.studentName }}</div>
+              <div class="cell-sub-text">{{ g.matricule }}</div>
+            </td>
+            <td>
+              <div class="cell-primary-text">{{ g.courseTitle }}</div>
+              <div class="cell-sub-text">{{ g.courseCode }}</div>
+            </td>
+            <td><strong>{{ g.examScore }}</strong> / 20</td>
+            <td>{{ g.dsScore }} / 20</td>
+            <td>{{ g.tpScore ? g.tpScore + ' / 20' : '-' }}</td>
+            <td>
+              <span class="final-score-badge">{{ g.finalScore }} / 20</span>
+            </td>
+            <td>
+              <span class="status-chip success">{{ g.status }}</span>
+            </td>
+            <td>{{ g.session }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- MODAL: INSCRIRE UN ÉTUDIANT -->
+  <div class="modal-overlay" *ngIf="showAddStudentModal" (click)="closeAddStudent()">
+    <div class="modal-window" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-user-plus text-navy"></i>
+          <span>Inscrire un Nouvel Étudiant</span>
+        </div>
+        <button class="modal-close-btn" (click)="closeAddStudent()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label">Prénom</label>
+            <input type="text" [(ngModel)]="newStudentData.firstName" placeholder="Ex: Mohamed" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nom</label>
+            <input type="text" [(ngModel)]="newStudentData.lastName" placeholder="Ex: Trabelsi" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-grid-2 mt-3">
+          <div class="form-group">
+            <label class="form-label">Numéro CIN</label>
+            <input type="text" [(ngModel)]="newStudentData.cin" placeholder="Ex: 09876543" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Universitaire</label>
+            <input type="email" [(ngModel)]="newStudentData.email" placeholder="etudiant@iit.tn" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-grid-2 mt-3">
+          <div class="form-group">
+            <label class="form-label">Filière</label>
+            <select [(ngModel)]="newStudentData.branch" class="form-control">
+              <option value="Génie Informatique (GI)">Génie Informatique (GI)</option>
+              <option value="Génie Télécoms & Réseaux (TR)">Génie Télécoms & Réseaux (TR)</option>
+              <option value="Génie Mécatronique & Robotique">Génie Mécatronique & Robotique</option>
+              <option value="Génie Civil">Génie Civil</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Niveau</label>
+            <select [(ngModel)]="newStudentData.level" class="form-control">
+              <option value="1ère Année Ingénieur">1ère Année Ingénieur</option>
+              <option value="2ème Année Ingénieur">2ème Année Ingénieur</option>
+              <option value="3ème Année Ingénieur">3ème Année Ingénieur</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeAddStudent()">Annuler</button>
+        <button class="btn btn-primary" (click)="saveStudent()">
+          <i class="fa-solid fa-check"></i> Valider l'Inscription
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: DÉTAILS ÉTUDIANT -->
+  <div class="modal-overlay" *ngIf="selectedStudentForDetail" (click)="closeStudentDetail()">
+    <div class="modal-window" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-address-card text-navy"></i>
+          <span>Fiche Étudiant IIT</span>
+        </div>
+        <button class="modal-close-btn" (click)="closeStudentDetail()">&times;</button>
+      </div>
+      <div class="modal-body" *ngIf="selectedStudentForDetail">
+        <div class="profile-summary">
+          <img [src]="selectedStudentForDetail.photoUrl" class="avatar-lg" alt="Avatar">
+          <div>
+            <h3>{{ selectedStudentForDetail.firstName }} {{ selectedStudentForDetail.lastName }}</h3>
+            <span class="matricule-tag">{{ selectedStudentForDetail.matricule }}</span>
+            <p class="profile-sub">{{ selectedStudentForDetail.branch }} &bull; {{ selectedStudentForDetail.level }}</p>
+          </div>
+        </div>
+
+        <div class="info-grid-2 mt-4">
+          <div class="info-item">
+            <span class="info-label">Numéro CIN</span>
+            <span class="info-val">{{ selectedStudentForDetail.cin }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Email Universitaire</span>
+            <span class="info-val">{{ selectedStudentForDetail.email }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Crédits ECTS Validés</span>
+            <span class="info-val">{{ selectedStudentForDetail.creditsAcquired }} / 120</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Moyenne Actuelle</span>
+            <span class="info-val text-bold">{{ selectedStudentForDetail.gpa }} / 20</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeStudentDetail()">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,385 @@
+<div class="content-container">
+  <!-- Toast -->
+  <div class="toast-alert" *ngIf="toastMessage">
+    <i class="fa-solid fa-circle-check"></i>
+    <span>{{ toastMessage }}</span>
+  </div>
+
+  <!-- Page Header -->
+  <div class="page-title-row">
+    <div class="page-title-block">
+      <h1>Espaces, Salles & Examens en Ligne</h1>
+      <p class="page-subtitle">Gérer les réservations de salles, vérifier les disponibilités et corriger automatiquement les examens.</p>
+    </div>
+
+    <div class="page-actions">
+      <button class="btn btn-accent" (click)="startExamSession()">
+        <i class="fa-solid fa-play"></i>
+        <span>Passer l'Examen en Ligne</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Subnav Tabs -->
+  <div class="subnav-tabs">
+    <button class="subnav-tab-btn" [class.active]="activeTab === 'rooms'" (click)="activeTab = 'rooms'">
+      <i class="fa-solid fa-door-open"></i>
+      <span>Salles & Disponibilités</span>
+      <span class="subnav-tab-badge">{{ rooms.length }}</span>
+    </button>
+    <button class="subnav-tab-btn" [class.active]="activeTab === 'exams'" (click)="activeTab = 'exams'">
+      <i class="fa-solid fa-calendar-check"></i>
+      <span>Sessions d'Examens</span>
+      <span class="subnav-tab-badge">{{ exams.length }}</span>
+    </button>
+    <button class="subnav-tab-btn" [class.active]="activeTab === 'live-exam'" (click)="startExamSession()">
+      <i class="fa-solid fa-laptop-code"></i>
+      <span>Épreuve Interactive</span>
+    </button>
+    <button class="subnav-tab-btn" [class.active]="activeTab === 'results'" (click)="activeTab = 'results'">
+      <i class="fa-solid fa-square-poll-vertical"></i>
+      <span>Résultats & Correction</span>
+      <span class="subnav-tab-badge" *ngIf="examResult">{{ examResult.score }}/20</span>
+    </button>
+  </div>
+
+  <!-- ==================== TAB 1: SALLES & DISPONIBILITÉS ==================== -->
+  <div *ngIf="activeTab === 'rooms'">
+    <!-- Filter Bar -->
+    <div class="filter-bar ui-card mb-4">
+      <div class="flex-wrap-gap">
+        <select [(ngModel)]="selectedRoomType" class="form-control select-width">
+          <option value="ALL">Tous les Types de Salles</option>
+          <option value="Amphithéâtre">Amphithéâtres</option>
+          <option value="Labo Informatique">Laboratoires Informatiques</option>
+          <option value="Salle de Cours">Salles de Cours</option>
+          <option value="Salle de Conférence">Salles de Conférence</option>
+        </select>
+
+        <select [(ngModel)]="selectedEquipment" class="form-control select-width">
+          <option value="ALL">Tous les Équipements</option>
+          <option value="Laser 4K">Projecteur Laser 4K</option>
+          <option value="Postes">Postes Informatiques</option>
+          <option value="GPU">Postes GPU</option>
+          <option value="Visioconférence">Visioconférence</option>
+        </select>
+      </div>
+
+      <div class="live-status-chip">
+        <span class="dot-green"></span>
+        <span>Disponibilités vérifiées en continu</span>
+      </div>
+    </div>
+
+    <!-- Rooms Cards Grid -->
+    <div class="rooms-grid">
+      <div class="ui-card room-card" *ngFor="let rm of filteredRooms">
+        <div class="room-top">
+          <span class="room-code-tag">{{ rm.code }}</span>
+          <span class="status-chip" [class.success]="rm.status === 'DISPONIBLE'" [class.danger]="rm.status === 'OCCUPE'">
+            {{ rm.status === 'DISPONIBLE' ? 'Disponible' : 'Occupée' }}
+          </span>
+        </div>
+
+        <h3 class="room-name">{{ rm.name }}</h3>
+        <div class="room-floor"><i class="fa-solid fa-location-dot"></i> {{ rm.floor }}</div>
+
+        <div class="room-capacity-badge">
+          <i class="fa-solid fa-users"></i>
+          <span>Capacité : <strong>{{ rm.capacity }} places</strong></span>
+        </div>
+
+        <div class="equip-tags-row">
+          <span class="equip-tag" *ngFor="let eq of rm.equipment">
+            <i class="fa-solid fa-check text-muted"></i> {{ eq }}
+          </span>
+        </div>
+
+        <div class="alert-booking mt-2" *ngIf="rm.currentBooking">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>{{ rm.currentBooking }}</span>
+        </div>
+
+        <div class="room-footer mt-4">
+          <button 
+            class="btn w-full" 
+            [class.btn-primary]="rm.status === 'DISPONIBLE'"
+            [class.btn-secondary]="rm.status === 'OCCUPE'"
+            [disabled]="rm.status === 'OCCUPE'"
+            (click)="openBooking(rm)">
+            <i class="fa-solid fa-calendar-plus"></i>
+            <span>{{ rm.status === 'DISPONIBLE' ? 'Réserver cette salle' : 'Salle Déjà Réservée' }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirmed Bookings Table -->
+    <div class="ui-card mt-6">
+      <div class="ui-card-header">
+        <div class="ui-card-title">
+          <i class="fa-solid fa-calendar-check text-navy"></i>
+          <span>Planning des Réservations Confirmées</span>
+        </div>
+      </div>
+      <table class="clean-table">
+        <thead>
+          <tr>
+            <th>Salle</th>
+            <th>Demandeur</th>
+            <th>Activité / Motif</th>
+            <th>Date & Horaires</th>
+            <th>Statut</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let res of reservations">
+            <td><strong>{{ res.roomName }}</strong></td>
+            <td>
+              <div class="cell-primary-text">{{ res.bookedBy }}</div>
+              <div class="cell-sub-text">{{ res.role }}</div>
+            </td>
+            <td>{{ res.purpose }}</td>
+            <td>
+              <span class="cell-primary-text">{{ res.date }}</span>
+              <div class="cell-sub-text">{{ res.startTime }} - {{ res.endTime }}</div>
+            </td>
+            <td>
+              <span class="status-chip success">Confirmé</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 2: EXAMENS EN LIGNE ==================== -->
+  <div *ngIf="activeTab === 'exams'">
+    <div class="cards-grid-3">
+      <div class="ui-card exam-card" *ngFor="let ex of exams">
+        <div class="exam-top">
+          <span class="course-code-badge">{{ ex.code }}</span>
+          <span class="status-chip" [class.info]="ex.status === 'A_VENIR'" [class.neutral]="ex.status === 'TERMINE'">
+            {{ ex.status === 'A_VENIR' ? 'À Venir' : 'Terminé' }}
+          </span>
+        </div>
+
+        <h3 class="exam-title">{{ ex.title }}</h3>
+        <div class="exam-course-lbl"><i class="fa-solid fa-graduation-cap"></i> Module : {{ ex.courseCode }}</div>
+
+        <div class="exam-info-list">
+          <div><i class="fa-regular fa-calendar"></i> {{ ex.date }} à {{ ex.startTime }}</div>
+          <div><i class="fa-regular fa-clock"></i> Durée : {{ ex.durationMinutes }} min</div>
+          <div><i class="fa-solid fa-door-open"></i> {{ ex.room }}</div>
+          <div><i class="fa-solid fa-user-tie"></i> Responsable : {{ ex.supervisor }}</div>
+        </div>
+
+        <button class="btn btn-primary w-full mt-4" (click)="startExamSession()">
+          <i class="fa-solid fa-play"></i>
+          <span>Démarrer l'Épreuve</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 3: PASSER L'EXAMEN (LIVE) ==================== -->
+  <div *ngIf="activeTab === 'live-exam'">
+    <div class="ui-card p-6">
+      <div class="exam-session-top">
+        <div>
+          <span class="status-chip warning mb-1">Évaluation en Cours</span>
+          <h2>Épreuve : Conception & Ingénierie Logicielle</h2>
+          <p class="text-muted">Candidat : Youssef Ben Amor (IIT-2024-0012)</p>
+        </div>
+
+        <div class="exam-timer-chip">
+          <i class="fa-regular fa-clock text-gold"></i>
+          <span class="timer-digits">
+            {{ examTimerMinutes < 10 ? '0' + examTimerMinutes : examTimerMinutes }}:{{ examTimerSeconds < 10 ? '0' + examTimerSeconds : examTimerSeconds }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Stepper -->
+      <div class="stepper-row mt-4">
+        <div 
+          class="step-btn" 
+          *ngFor="let q of questions; let idx = index"
+          [class.active]="currentQuestionIndex === idx"
+          [class.done]="userAnswers[q.id] !== undefined"
+          (click)="currentQuestionIndex = idx">
+          <span>Q{{ idx + 1 }}</span>
+        </div>
+      </div>
+
+      <!-- Question Card -->
+      <div class="question-clean-box mt-4" *ngIf="questions[currentQuestionIndex]">
+        <div class="question-lead-info">
+          Question {{ currentQuestionIndex + 1 }} sur {{ questions.length }} &bull; Thème : 
+          <strong>{{ questions[currentQuestionIndex].theme }}</strong>
+        </div>
+
+        <h3 class="q-title">{{ questions[currentQuestionIndex].text }}</h3>
+
+        <div class="options-list">
+          <div 
+            class="option-item" 
+            *ngFor="let opt of questions[currentQuestionIndex].options; let optIdx = index"
+            [class.selected]="userAnswers[questions[currentQuestionIndex].id] === optIdx"
+            (click)="selectAnswer(questions[currentQuestionIndex].id, optIdx)">
+            <span class="opt-letter">{{ ['A', 'B', 'C', 'D'][optIdx] }}</span>
+            <span class="opt-text">{{ opt }}</span>
+          </div>
+        </div>
+
+        <div class="nav-actions-bottom mt-5">
+          <button class="btn btn-secondary" [disabled]="currentQuestionIndex === 0" (click)="prevQuestion()">
+            <i class="fa-solid fa-arrow-left"></i> Précédent
+          </button>
+
+          <div class="flex-align-gap">
+            <button class="btn btn-secondary" *ngIf="currentQuestionIndex < questions.length - 1" (click)="nextQuestion()">
+              Suivant <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            <button class="btn btn-accent" (click)="submitExamNow()">
+              <i class="fa-solid fa-check"></i> Valider et Soumettre l'Examen
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 4: RÉSULTATS & CORRECTION ==================== -->
+  <div *ngIf="activeTab === 'results'">
+    <div class="ui-card p-6" *ngIf="examResult">
+      <div class="score-summary-flex">
+        <div class="score-circle-clean" [class.success]="examResult.score >= 10" [class.danger]="examResult.score < 10">
+          <span class="score-val">{{ examResult.score }}</span>
+          <span class="score-denom">/ 20</span>
+        </div>
+
+        <div class="score-details-meta">
+          <span class="status-chip" [class.success]="examResult.score >= 10" [class.danger]="examResult.score < 10">
+            {{ examResult.status === 'Réussi' ? 'Épreuve Validée' : 'Session de Rattrapage' }}
+          </span>
+          <h2 class="result-heading">{{ examResult.examTitle }}</h2>
+          <p class="text-muted">Résultat calculé automatiquement et transmis au dossier universitaire.</p>
+
+          <div class="result-stats-pills mt-2">
+            <span><strong>{{ examResult.correctAnswers }}</strong> / {{ examResult.totalQuestions }} réponses exactes</span>
+            <span>&bull;</span>
+            <span>Score : <strong>{{ examResult.percentage }}%</strong></span>
+            <span>&bull;</span>
+            <span>Étudiant : <strong>{{ examResult.studentName }} ({{ examResult.matricule }})</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Answers Review -->
+      <div class="review-section mt-5">
+        <h3 class="section-subheading mb-3"><i class="fa-solid fa-list-check text-navy"></i> Corrigé Pédagogique Détaillé</h3>
+
+        <div class="review-question-card" *ngFor="let q of questions; let qIdx = index">
+          <div class="rq-header">
+            <span class="rq-num">Question {{ qIdx + 1 }} &bull; {{ q.theme }}</span>
+            <span class="status-chip" [class.success]="userAnswers[q.id] === q.correctAnswer" [class.danger]="userAnswers[q.id] !== q.correctAnswer">
+              {{ userAnswers[q.id] === q.correctAnswer ? 'Exact (+4 pts)' : 'Incorrect (0 pt)' }}
+            </span>
+          </div>
+
+          <p class="rq-text">{{ q.text }}</p>
+
+          <div class="rq-options">
+            <div 
+              class="rq-option-line" 
+              *ngFor="let opt of q.options; let optIdx = index"
+              [class.user-choice]="userAnswers[q.id] === optIdx"
+              [class.correct-choice]="optIdx === q.correctAnswer">
+              <span class="rq-letter">{{ ['A', 'B', 'C', 'D'][optIdx] }}.</span>
+              <span>{{ opt }}</span>
+              <span class="choice-tag" *ngIf="userAnswers[q.id] === optIdx">(Votre sélection)</span>
+              <span class="correct-tag" *ngIf="optIdx === q.correctAnswer">&check; Réponse exacte</span>
+            </div>
+          </div>
+
+          <div class="rq-explanation-box mt-3">
+            <i class="fa-solid fa-circle-info text-navy"></i>
+            <span><strong>Explication :</strong> {{ q.explanation }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui-card p-6 text-center" *ngIf="!examResult">
+      <i class="fa-solid fa-laptop-file text-subtle" style="font-size: 2.5rem; margin-bottom: 0.75rem;"></i>
+      <h3>Aucune épreuve soumise pour l'instant</h3>
+      <p class="text-muted mt-1">Sélectionnez une session pour passer l'examen interactif en ligne.</p>
+      <button class="btn btn-primary mt-4" (click)="startExamSession()">
+        <i class="fa-solid fa-play"></i> Démarrer l'Épreuve
+      </button>
+    </div>
+  </div>
+
+  <!-- BOOKING MODAL -->
+  <div class="modal-overlay" *ngIf="showBookingModal" (click)="closeBooking()">
+    <div class="modal-window" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-calendar-plus text-navy"></i>
+          <span>Réserver : {{ selectedRoomForBooking?.name }}</span>
+        </div>
+        <button class="modal-close-btn" (click)="closeBooking()">&times;</button>
+      </div>
+      <div class="modal-body" *ngIf="selectedRoomForBooking">
+        <div class="room-quick-summary">
+          <div>Code : <strong>{{ selectedRoomForBooking.code }}</strong></div>
+          <div>Capacité : <strong>{{ selectedRoomForBooking.capacity }} places</strong></div>
+          <div>Étage : <strong>{{ selectedRoomForBooking.floor }}</strong></div>
+        </div>
+
+        <div class="form-group mt-3">
+          <label class="form-label">Motif de la Réservation</label>
+          <input type="text" [(ngModel)]="bookingForm.purpose" placeholder="Ex: Cours, TP ou Soutenance" class="form-control">
+        </div>
+
+        <div class="form-grid-2 mt-3">
+          <div class="form-group">
+            <label class="form-label">Heure Début</label>
+            <input type="time" [(ngModel)]="bookingForm.startTime" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Heure Fin</label>
+            <input type="time" [(ngModel)]="bookingForm.endTime" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-grid-2 mt-3">
+          <div class="form-group">
+            <label class="form-label">Demandeur</label>
+            <input type="text" [(ngModel)]="bookingForm.bookedBy" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Rôle</label>
+            <select [(ngModel)]="bookingForm.role" class="form-control">
+              <option value="Enseignant">Enseignant</option>
+              <option value="Administration">Administration</option>
+              <option value="Club Étudiant">Club Étudiant</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="check-box-alert mt-4">
+          <i class="fa-solid fa-circle-check text-success"></i>
+          <span>Vérification immédiate : Salle disponible sur ce créneau.</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeBooking()">Annuler</button>
+        <button class="btn btn-primary" (click)="confirmBooking()">
+          <i class="fa-solid fa-check"></i> Confirmer la Réservation
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

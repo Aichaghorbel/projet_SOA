@@ -1,0 +1,227 @@
+<div class="arch-page container-custom">
+  <!-- Header Banner -->
+  <div class="arch-banner-box">
+    <div class="arch-banner-content">
+      <div class="banner-badge-iit">
+        <i class="fa-solid fa-sitemap text-gold"></i>
+        <span>CONCEPTION ARCHITECTURALE SOA &bull; IIT SFAX</span>
+      </div>
+      <h1 class="arch-title">Architecture du Projet EduCampus</h1>
+      <p class="arch-lead">
+        Centralisation et décomposition modulaire en 3 microservices hétérogènes communicant via 
+        <strong>REST</strong>, <strong>gRPC</strong> et <strong>SOAP</strong> autour d'une <strong>API Gateway</strong>.
+      </p>
+    </div>
+  </div>
+
+  <!-- Document Reproduction & Problem Statement (Directly from user document) -->
+  <div class="problem-statement-card card-box mt-4">
+    <div class="card-section-head">
+      <span class="section-num">1</span>
+      <div>
+        <h2>Titre et Description du Problème Métier</h2>
+        <p class="section-sub">Extrait des spécifications officielles EduCampus</p>
+      </div>
+    </div>
+
+    <div class="problem-body">
+      <p>
+        <strong>EduCampus</strong> est une plateforme universitaire qui centralise les principaux services d'une université : 
+        <strong>gestion des étudiants et des cours</strong>, <strong>examens en ligne</strong>, <strong>réservation des salles</strong>.
+      </p>
+      <div class="problem-alert-box">
+        <i class="fa-solid fa-triangle-exclamation text-gold"></i>
+        <div>
+          <strong>Problématique actuelle :</strong> Ces activités sont souvent gérées par des systèmes séparés, ce qui peut entraîner des conflits de réservation, des retards dans la correction des examens et des difficultés dans la transmission des résultats à l'administration.
+        </div>
+      </div>
+      <p>
+        <strong>Objectif de la solution :</strong> Simplifier ces opérations grâce à une architecture basée sur des microservices indépendants qui communiquent à travers trois technologies complémentaires : 
+        <span class="tag-bold rest">REST</span>, <span class="tag-bold grpc">gRPC</span> et <span class="tag-bold soap">SOAP</span>.
+      </p>
+    </div>
+  </div>
+
+  <!-- Microservices Responsibilities & Styles Table (Part 2 & 3 from document) -->
+  <div class="specs-matrix-card card-box mt-5">
+    <div class="card-section-head">
+      <span class="section-num">2 & 3</span>
+      <div>
+        <h2>Microservices Envisagés, Responsabilités et Justification Technique</h2>
+        <p class="section-sub">Correspondance exacte du cahier des charges</p>
+      </div>
+    </div>
+
+    <div class="table-container mt-3">
+      <table class="specs-table">
+        <thead>
+          <tr>
+            <th>Service</th>
+            <th>Style & Protocole</th>
+            <th>Responsabilité Métier</th>
+            <th>Pourquoi ce Choix ? (Justification)</th>
+            <th>Endpoints Types</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let s of architectureMatrix">
+            <td>
+              <div class="svc-cell-title">{{ s.service }}</div>
+              <div class="port-cell font-mono">Port: {{ s.port }}</div>
+            </td>
+            <td>
+              <span [ngClass]="s.badgeClass">{{ s.style }}</span>
+              <div class="format-cell font-mono">{{ s.format }}</div>
+            </td>
+            <td>
+              <p class="table-resp">{{ s.responsabilite }}</p>
+            </td>
+            <td>
+              <div class="table-justif">
+                <i class="fa-solid fa-check-circle"></i>
+                <span>{{ s.justification }}</span>
+              </div>
+            </td>
+            <td>
+              <ul class="ep-list font-mono">
+                <li *ngFor="let ep of s.endpoints">{{ ep }}</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Visual Architecture Diagram (Interactive Flow + Original Document Viewer) -->
+  <div class="diagram-section-card card-box mt-5">
+    <div class="card-section-head">
+      <span class="section-num">4</span>
+      <div>
+        <h2>Schéma d'Architecture du Projet</h2>
+        <p class="section-sub">Flux de communication de bout en bout et document de conception scanné</p>
+      </div>
+    </div>
+
+    <!-- Visual Interactive Flow Tree -->
+    <div class="interactive-arch-tree mt-4">
+      <!-- Layer 1: Actors -->
+      <div class="arch-layer">
+        <div class="layer-title-chip">
+          <i class="fa-solid fa-users"></i> Acteurs / Utilisateurs de la Plateforme
+        </div>
+        <div class="actors-row">
+          <div class="actor-card">
+            <i class="fa-solid fa-user-graduate text-blue"></i>
+            <span>Étudiant</span>
+          </div>
+          <div class="actor-card">
+            <i class="fa-solid fa-chalkboard-user text-gold"></i>
+            <span>Enseignant</span>
+          </div>
+          <div class="actor-card">
+            <i class="fa-solid fa-building-columns text-purple"></i>
+            <span>Administration</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arrow down -->
+      <div class="flow-arrow">
+        <span class="proto-wire">HTTPS</span>
+        <i class="fa-solid fa-arrow-down"></i>
+      </div>
+
+      <!-- Layer 2: Web Portal -->
+      <div class="arch-layer">
+        <div class="layer-title-chip">
+          <i class="fa-solid fa-laptop"></i> Portail Web (Frontend Interface)
+        </div>
+        <div class="portal-node">
+          <img src="assets/iit-1536x970-1.png" alt="IIT" class="mini-logo-flow">
+          <div>
+            <strong>Interface Utilisateur Angular 16 (EduCampus)</strong>
+            <span>Navigation unifiée &bull; Rôles Étudiant / Enseignant / Scolarité</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arrow down -->
+      <div class="flow-arrow">
+        <span class="proto-wire">HTTPS / JSON</span>
+        <i class="fa-solid fa-arrow-down"></i>
+      </div>
+
+      <!-- Layer 3: API Gateway -->
+      <div class="arch-layer">
+        <div class="layer-title-chip">
+          <i class="fa-solid fa-route"></i> API Gateway (REST / HTTP)
+        </div>
+        <div class="gateway-node">
+          <div class="gw-badge">Routage Centralisé &bull; Authentification &bull; Sécurité &bull; Load Balancing</div>
+          <div class="gw-code font-mono">http://localhost:8080/api/v1/*</div>
+        </div>
+      </div>
+
+      <!-- Multi-branch Connector -->
+      <div class="multi-branch-wires">
+        <div class="wire-branch">
+          <span class="wire-label tag-rest">REST / HTTP JSON</span>
+          <i class="fa-solid fa-arrow-down"></i>
+        </div>
+        <div class="wire-branch">
+          <span class="wire-label tag-grpc">gRPC / HTTP/2 Binary</span>
+          <i class="fa-solid fa-arrow-down"></i>
+        </div>
+        <div class="wire-branch">
+          <span class="wire-label tag-soap">SOAP 1.2 / XML WSDL</span>
+          <i class="fa-solid fa-arrow-down"></i>
+        </div>
+      </div>
+
+      <!-- Layer 4: Microservices Layer -->
+      <div class="microservices-layer-row">
+        <!-- Academic Service -->
+        <div class="ms-box-node border-rest">
+          <div class="ms-head">
+            <span class="badge-service-rest">REST</span>
+            <span class="port-tag">Port 8081</span>
+          </div>
+          <h4>Academic Service</h4>
+          <p>Étudiants, Cours, Emplois du temps, Inscriptions, Examens & Notes.</p>
+        </div>
+
+        <!-- Smart Space & Exam Service -->
+        <div class="ms-box-node border-grpc">
+          <div class="ms-head">
+            <span class="badge-service-grpc">gRPC</span>
+            <span class="port-tag">Port 9092</span>
+          </div>
+          <h4>Smart Space & Exam Service</h4>
+          <p>Réservation sans conflit, télémétrie, correction automatique QCM & streaming.</p>
+        </div>
+
+        <!-- University Administration Service -->
+        <div class="ms-box-node border-soap">
+          <div class="ms-head">
+            <span class="badge-service-soap">SOAP</span>
+            <span class="port-tag">Port 8083</span>
+          </div>
+          <h4>University Administration Service</h4>
+          <p>Vérification d'éligibilité, quitus et certifications officielles scellées.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Side-by-side: Document Scanned Image Embedded -->
+    <div class="document-embed-box mt-6">
+      <div class="doc-embed-header">
+        <i class="fa-solid fa-file-image text-gold"></i>
+        <h3>Document Source Fourni (Fiche de Conception EduCampus)</h3>
+      </div>
+      <div class="doc-embed-wrapper">
+        <img src="assets/project-architecture.jpg" alt="Document officiel du projet" class="doc-embed-image">
+      </div>
+    </div>
+  </div>
+</div>

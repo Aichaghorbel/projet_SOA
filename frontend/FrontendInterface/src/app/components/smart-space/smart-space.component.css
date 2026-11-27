@@ -1,0 +1,538 @@
+.flex-wrap-gap {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.select-width {
+  width: auto;
+  min-width: 200px;
+}
+
+.live-status-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--success-text);
+  background-color: var(--success-bg);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+}
+
+.dot-green {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--success-text);
+}
+
+.rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+  gap: 1.25rem;
+}
+
+.room-card {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.room-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.room-code-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.room-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.room-floor {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.room-capacity-badge {
+  background: var(--bg-app);
+  padding: 0.4rem 0.65rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.equip-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
+}
+
+.equip-tag {
+  background-color: var(--border-subtle);
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-sm);
+}
+
+.alert-booking {
+  background: var(--warning-bg);
+  border: 1px solid var(--warning-border);
+  color: var(--warning-text);
+  padding: 0.4rem 0.65rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.exam-card {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.exam-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.exam-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.exam-course-lbl {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.exam-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.exam-info-list i {
+  color: var(--text-subtle);
+  width: 16px;
+}
+
+.exam-session-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.exam-timer-chip {
+  background-color: var(--text-primary);
+  color: var(--iit-gold);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.timer-digits {
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.stepper-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.step-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  background: var(--surface);
+}
+
+.step-btn.active {
+  border-color: var(--iit-navy);
+  color: var(--iit-navy);
+  background: var(--iit-navy-light);
+}
+
+.step-btn.done {
+  background: var(--iit-navy);
+  color: #ffffff;
+  border-color: var(--iit-navy);
+}
+
+.question-clean-box {
+  background: var(--bg-app);
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+}
+
+.question-lead-info {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+}
+
+.q-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+}
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.option-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.option-item:hover {
+  border-color: var(--iit-navy);
+}
+
+.option-item.selected {
+  border-color: var(--iit-navy);
+  background: var(--iit-navy-subtle);
+}
+
+.opt-letter {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-full);
+  background: var(--border-subtle);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.option-item.selected .opt-letter {
+  background: var(--iit-navy);
+  color: white;
+}
+
+.opt-text {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.nav-actions-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.score-summary-flex {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.score-circle-clean {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid var(--success-text);
+  background: var(--success-bg);
+}
+
+.score-circle-clean.danger {
+  border-color: var(--danger-text);
+  background: var(--danger-bg);
+}
+
+.score-val {
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--success-text);
+}
+
+.score-denom {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.result-heading {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 0.25rem;
+}
+
+.result-stats-pills {
+  display: flex;
+  gap: 0.6rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.review-question-card {
+  background: var(--bg-app);
+  padding: 1.1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  margin-bottom: 1rem;
+}
+
+.rq-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.rq-num {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.rq-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.rq-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.rq-option-line {
+  padding: 0.45rem 0.65rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.825rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.rq-option-line.correct-choice {
+  border-color: var(--success-border);
+  background: var(--success-bg);
+  font-weight: 600;
+}
+
+.correct-tag {
+  color: var(--success-text);
+  font-weight: 700;
+  margin-left: auto;
+}
+
+.choice-tag {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.rq-explanation-box {
+  background: var(--iit-gold-light);
+  padding: 0.55rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  color: #78350f;
+  display: flex;
+  gap: 0.45rem;
+}
+
+.room-quick-summary {
+  background: var(--bg-app);
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.825rem;
+  border: 1px solid var(--border);
+  display: flex;
+  gap: 1.25rem;
+}
+
+.check-box-alert {
+  background: var(--success-bg);
+  color: var(--success-text);
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+/* These utility classes are used by the exam template but are not part of a CSS framework. */
+.ui-card.p-6 {
+  padding: 1.5rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.mt-5 {
+  margin-top: 1.5rem;
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-subtle {
+  color: var(--text-subtle);
+}
+
+.ui-card.p-6.text-center {
+  min-height: 142px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.ui-card.p-6.text-center h3 {
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.ui-card.p-6.text-center p {
+  color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+  .rooms-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  }
+
+  .select-width {
+    min-width: min(100%, 240px);
+  }
+
+  .room-quick-summary {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+
+  .exam-session-top,
+  .score-summary-flex {
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .result-stats-pills {
+    flex-wrap: wrap;
+  }
+
+  .clean-table {
+    min-width: 680px;
+  }
+}
+
+@media (max-width: 560px) {
+  .rooms-grid,
+  .cards-grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .flex-wrap-gap,
+  .flex-wrap-gap .form-control,
+  .select-width {
+    width: 100%;
+  }
+
+  .exam-session-top,
+  .score-summary-flex,
+  .nav-actions-bottom {
+    flex-direction: column;
+  }
+
+  .nav-actions-bottom,
+  .nav-actions-bottom > *,
+  .nav-actions-bottom .btn {
+    width: 100%;
+  }
+
+  .nav-actions-bottom .flex-align-gap {
+    flex-direction: column;
+  }
+
+  .question-clean-box {
+    padding: 1rem;
+  }
+
+  .rq-option-line {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .correct-tag {
+    margin-left: 0;
+  }
+}

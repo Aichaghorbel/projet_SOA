@@ -1,0 +1,32 @@
+<header class="topbar-container">
+  <div class="topbar-left">
+    <div class="breadcrumb-trail">
+      <span class="univ-crumb"><i class="fa-solid fa-graduation-cap text-gold"></i> IIT Sfax</span>
+      <span class="crumb-separator">/</span>
+      <span class="active-crumb">{{ pageTitle }}</span>
+    </div>
+  </div>
+
+  <div class="topbar-right">
+    <div class="date-chip">
+      <i class="fa-regular fa-calendar"></i>
+      <span>{{ currentDate }}</span>
+    </div>
+
+    <div class="topbar-badge-status">
+      <span class="status-pulse-dot"></span>
+      <span>Année 2025-2026</span>
+    </div>
+
+    <div class="topbar-avatar-pill">
+      <div class="pill-avatar">
+        <span *ngIf="currentRole === 'student'">YB</span>
+        <span *ngIf="currentRole === 'teacher'">TL</span>
+        <span *ngIf="currentRole === 'admin'">AD</span>
+      </div>
+      <span class="pill-name">
+        {{ currentRole === 'student' ? 'Youssef Ben Amor' : currentRole === 'teacher' ? 'Dr. Tarek Louati' : 'Administration' }}
+      </span>
+    </div>
+  </div>
+</header>

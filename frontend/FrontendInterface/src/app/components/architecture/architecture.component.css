@@ -1,0 +1,39 @@
+.arch-page {
+  padding: 1rem 0;
+}
+
+.arch-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+}
+
+.arch-header {
+  margin-bottom: 1rem;
+}
+
+.arch-header h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.arch-header p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.doc-wrapper {
+  background: var(--bg-app);
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  text-align: center;
+  border: 1px solid var(--border);
+}
+
+.doc-wrapper img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-sm);
+}

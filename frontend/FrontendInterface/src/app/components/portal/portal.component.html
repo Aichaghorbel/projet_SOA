@@ -1,0 +1,447 @@
+<div class="content-container">
+  <!-- Page Header & Role Switcher -->
+  <div class="page-title-row">
+    <div class="page-title-block">
+      <h1>Mon Espace Personnel</h1>
+      <p class="page-subtitle">Vue personnalisée pour : {{ currentRole === 'student' ? 'Étudiant' : currentRole === 'teacher' ? 'Enseignant' : 'Administration' }}.</p>
+    </div>
+
+    <div class="role-segmented-toggle">
+      <button 
+        type="button" 
+        class="role-pill-btn" 
+        [class.active]="currentRole === 'student'" 
+        (click)="setRole('student')">
+        <i class="fa-solid fa-user-graduate"></i> Étudiant
+      </button>
+      <button 
+        type="button" 
+        class="role-pill-btn" 
+        [class.active]="currentRole === 'teacher'" 
+        (click)="setRole('teacher')">
+        <i class="fa-solid fa-chalkboard-user"></i> Enseignant
+      </button>
+      <button 
+        type="button" 
+        class="role-pill-btn" 
+        [class.active]="currentRole === 'admin'" 
+        (click)="setRole('admin')">
+        <i class="fa-solid fa-building-columns"></i> Administration
+      </button>
+    </div>
+  </div>
+
+  <!-- User Banner: Simple, Clean & Direct -->
+  <div class="ui-card user-banner-clean mb-4">
+    <div class="banner-left-info">
+      <div class="avatar-circle-simple" [class.teacher]="currentRole === 'teacher'" [class.admin]="currentRole === 'admin'">
+        <span *ngIf="currentRole === 'student'">YB</span>
+        <span *ngIf="currentRole === 'teacher'">TL</span>
+        <span *ngIf="currentRole === 'admin'">AD</span>
+      </div>
+      <div>
+        <div class="banner-name-row">
+          <h2 class="banner-user-name" *ngIf="currentRole === 'student'">Youssef Ben Amor</h2>
+          <h2 class="banner-user-name" *ngIf="currentRole === 'teacher'">Dr. Tarek Louati</h2>
+          <h2 class="banner-user-name" *ngIf="currentRole === 'admin'">Scolarité Centrale IIT</h2>
+          <span class="status-chip success" *ngIf="currentRole === 'student'">Inscrit</span>
+          <span class="status-chip navy" *ngIf="currentRole === 'teacher'">Enseignant Titulaire</span>
+          <span class="status-chip neutral" *ngIf="currentRole === 'admin'">Administration</span>
+        </div>
+        <p class="banner-role-sub" *ngIf="currentRole === 'student'">
+          Génie Informatique &bull; 3<sup>ème</sup> Année &bull; Matricule : <span class="font-mono">IIT-2024-0012</span>
+        </p>
+        <p class="banner-role-sub" *ngIf="currentRole === 'teacher'">
+          Département Génie Informatique &bull; Bureau B2-12 &bull; IIT Sfax
+        </p>
+        <p class="banner-role-sub" *ngIf="currentRole === 'admin'">
+          Gestion des Inscriptions, Examens et Certifications Officielles
+        </p>
+      </div>
+    </div>
+
+    <!-- Right KPI Chips -->
+    <div class="banner-pills-right" *ngIf="currentRole === 'student'">
+      <div class="stat-pill-box">
+        <span class="sp-label">Moyenne</span>
+        <span class="sp-val text-navy">16.85 / 20</span>
+      </div>
+      <div class="stat-pill-box">
+        <span class="sp-label">Crédits ECTS</span>
+        <span class="sp-val text-navy">120 ECTS</span>
+      </div>
+      <div class="stat-pill-box">
+        <span class="sp-label">Statut</span>
+        <span class="sp-val text-success">Éligible</span>
+      </div>
+    </div>
+
+    <div class="banner-pills-right" *ngIf="currentRole === 'teacher'">
+      <div class="stat-pill-box">
+        <span class="sp-label">Enseignements</span>
+        <span class="sp-val text-navy">2 Matières</span>
+      </div>
+      <div class="stat-pill-box">
+        <span class="sp-label">Étudiants</span>
+        <span class="sp-val text-navy">38 Inscrits</span>
+      </div>
+      <div class="stat-pill-box">
+        <span class="sp-label">Salles</span>
+        <span class="sp-val text-success">Réservées</span>
+      </div>
+    </div>
+
+    <div class="banner-pills-right" *ngIf="currentRole === 'admin'">
+      <div class="stat-pill-box">
+        <span class="sp-label">Effectif</span>
+        <span class="sp-val text-navy">1,450+</span>
+      </div>
+      <div class="stat-pill-box">
+        <span class="sp-label">Attestations</span>
+        <span class="sp-val text-gold">{{ certificates.length }}</span>
+      </div>
+      <div class="stat-pill-box">
+        <span class="sp-label">Quitus</span>
+        <span class="sp-val text-success">100% Validé</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       1. VUE ÉTUDIANT (SIMPLE & ÉPURÉE)
+       ======================================================== -->
+  <div *ngIf="currentRole === 'student'">
+    <!-- 3 Action Cards (Simple & Direct) -->
+    <div class="cards-grid-3 mb-4">
+      <div class="ui-card simple-action-card">
+        <div class="sac-head">
+          <i class="fa-solid fa-stopwatch text-gold"></i>
+          <h3>Prochain Examen</h3>
+        </div>
+        <p class="sac-info">Conception & Ingénierie Logicielle</p>
+        <span class="sac-date"><i class="fa-regular fa-clock"></i> 28 Nov à 09:00 &bull; Salle 204</span>
+        <a routerLink="/smart-space" class="btn btn-primary w-full mt-3">
+          <i class="fa-solid fa-play"></i> Démarrer l'Épreuve
+        </a>
+      </div>
+
+      <div class="ui-card simple-action-card">
+        <div class="sac-head">
+          <i class="fa-solid fa-calendar-day text-navy"></i>
+          <h3>Séance du Jour</h3>
+        </div>
+        <p class="sac-info">INF-301 : Architectures Logicielles</p>
+        <span class="sac-date"><i class="fa-regular fa-clock"></i> 08:30 - 11:30 &bull; Labo B2-04</span>
+        <a routerLink="/academic" class="btn btn-secondary w-full mt-3">
+          <i class="fa-solid fa-calendar-days"></i> Emploi du Temps
+        </a>
+      </div>
+
+      <div class="ui-card simple-action-card">
+        <div class="sac-head">
+          <i class="fa-solid fa-stamp text-purple"></i>
+          <h3>Attestations Officielles</h3>
+        </div>
+        <p class="sac-info">Certificat de scolarité ou relevé officiel</p>
+        <span class="sac-date"><i class="fa-solid fa-check text-success"></i> Quitus et signature validés</span>
+        <a routerLink="/administration" class="btn btn-secondary w-full mt-3">
+          <i class="fa-solid fa-file-contract"></i> Télécharger
+        </a>
+      </div>
+    </div>
+
+    <!-- 2 Columns: Schedule on Left, Grades on Right -->
+    <div class="portal-two-cols">
+      <!-- Left: Planning -->
+      <div class="ui-card">
+        <div class="ui-card-header">
+          <div class="ui-card-title">
+            <i class="fa-solid fa-calendar-week text-navy"></i>
+            <span>Emploi du Temps Hebdomadaire</span>
+          </div>
+          <a routerLink="/academic" class="btn-link-sm">Voir tout &rarr;</a>
+        </div>
+        <table class="clean-table">
+          <thead>
+            <tr>
+              <th>Jour & Heure</th>
+              <th>Matière</th>
+              <th>Salle</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of timetable.slice(0, 4)">
+              <td>
+                <strong>{{ item.day }}</strong>
+                <div class="cell-sub-text">{{ item.timeSlot }}</div>
+              </td>
+              <td>
+                <div class="cell-primary-text">{{ item.courseTitle }}</div>
+                <div class="cell-sub-text font-mono">{{ item.courseCode }}</div>
+              </td>
+              <td>{{ item.room }}</td>
+              <td>
+                <span class="status-chip" [class.navy]="item.type === 'Cours'" [class.success]="item.type === 'TP'">{{ item.type }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Right: Grades -->
+      <div class="ui-card">
+        <div class="ui-card-header">
+          <div class="ui-card-title">
+            <i class="fa-solid fa-square-poll-vertical text-gold"></i>
+            <span>Dernières Notes & Résultats</span>
+          </div>
+          <span class="status-chip success font-mono">Moyenne : 16.85</span>
+        </div>
+        <table class="clean-table">
+          <thead>
+            <tr>
+              <th>Matière</th>
+              <th>Note</th>
+              <th class="text-right">Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let g of grades.slice(0, 4)">
+              <td>
+                <div class="cell-primary-text">{{ g.courseTitle }}</div>
+                <div class="cell-sub-text font-mono">{{ g.courseCode }}</div>
+              </td>
+              <td>
+                <strong>{{ g.finalScore }}</strong> <span class="cell-sub-text">/ 20</span>
+              </td>
+              <td class="text-right">
+                <span class="status-chip success">Validé</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       2. VUE ENSEIGNANT (SIMPLE & ÉPURÉE)
+       ======================================================== -->
+  <div *ngIf="currentRole === 'teacher'">
+    <div class="cards-grid-3 mb-4">
+      <div class="ui-card simple-action-card">
+        <div class="sac-head">
+          <i class="fa-solid fa-door-open text-navy"></i>
+          <h3>Réserver une Salle</h3>
+        </div>
+        <p class="sac-info">Amphithéâtres et laboratoires informatiques</p>
+        <span class="sac-date"><i class="fa-solid fa-check text-success"></i> Salles disponibles</span>
+        <a routerLink="/smart-space" class="btn btn-primary w-full mt-3">
+          <i class="fa-solid fa-calendar-plus"></i> Réserver
+        </a>
+      </div>
+
+      <div class="ui-card simple-action-card">
+        <div class="sac-head">
+          <i class="fa-solid fa-chalkboard-user text-gold"></i>
+          <h3>Mes Enseignements</h3>
+        </div>
+        <p class="sac-info">INF-301 : Architectures Logicielles</p>
+        <span class="sac-date"><i class="fa-solid fa-users"></i> 38 étudiants inscrits</span>
+        <a routerLink="/academic" class="btn btn-secondary w-full mt-3">
+          <i class="fa-solid fa-list"></i> Consulter la Classe
+        </a>
+      </div>
+
+      <div class="ui-card simple-action-card">
+        <div class="sac-head">
+          <i class="fa-solid fa-square-poll-vertical text-purple"></i>
+          <h3>Correction des Examens</h3>
+        </div>
+        <p class="sac-info">Sessions interactives et notes calculées</p>
+        <span class="sac-date"><i class="fa-solid fa-chart-line"></i> Résultats automatiques</span>
+        <a routerLink="/smart-space" class="btn btn-secondary w-full mt-3">
+          <i class="fa-solid fa-eye"></i> Voir les Notes
+        </a>
+      </div>
+    </div>
+
+    <!-- 2 Columns: Teacher Schedule & Reservations -->
+    <div class="portal-two-cols">
+      <div class="ui-card">
+        <div class="ui-card-header">
+          <div class="ui-card-title">
+            <i class="fa-solid fa-calendar-check text-navy"></i>
+            <span>Mes Séances de la Semaine</span>
+          </div>
+        </div>
+        <table class="clean-table">
+          <thead>
+            <tr>
+              <th>Jour & Heure</th>
+              <th>Module</th>
+              <th>Salle</th>
+              <th>Groupe</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of timetable.slice(0, 4)">
+              <td>
+                <strong>{{ item.day }}</strong>
+                <div class="cell-sub-text">{{ item.timeSlot }}</div>
+              </td>
+              <td>{{ item.courseTitle }}</td>
+              <td>{{ item.room }}</td>
+              <td><span class="status-chip neutral">{{ item.group }}</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="ui-card">
+        <div class="ui-card-header">
+          <div class="ui-card-title">
+            <i class="fa-solid fa-door-open text-gold"></i>
+            <span>Mes Réservations de Salles</span>
+          </div>
+        </div>
+        <table class="clean-table">
+          <thead>
+            <tr>
+              <th>Salle</th>
+              <th>Date & Horaires</th>
+              <th>Motif</th>
+              <th class="text-right">Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let res of reservations.slice(0, 4)">
+              <td><strong>{{ res.roomName }}</strong></td>
+              <td>
+                <div>{{ res.date }}</div>
+                <div class="cell-sub-text">{{ res.startTime }} - {{ res.endTime }}</div>
+              </td>
+              <td>{{ res.purpose }}</td>
+              <td class="text-right"><span class="status-chip success">Confirmé</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       3. VUE ADMINISTRATION (SIMPLE & ÉPURÉE)
+       ======================================================== -->
+  <div *ngIf="currentRole === 'admin'">
+    <div class="cards-grid-3 mb-4">
+      <div class="ui-card simple-action-card">
+        <div class="sac-head">
+          <i class="fa-solid fa-user-check text-navy"></i>
+          <h3>Contrôle d'Éligibilité</h3>
+        </div>
+        <p class="sac-info">Audit des quitus et conformité académique</p>
+        <span class="sac-date"><i class="fa-solid fa-check text-success"></i> Quitus en temps réel</span>
+        <a routerLink="/administration" class="btn btn-primary w-full mt-3">
+          <i class="fa-solid fa-magnifying-glass"></i> Auditer un Dossier
+        </a>
+      </div>
+
+      <div class="ui-card simple-action-card">
+        <div class="sac-head">
+          <i class="fa-solid fa-certificate text-gold"></i>
+          <h3>Attestations Prêtes</h3>
+        </div>
+        <p class="sac-info">{{ certificates.length }} documents officiels prêts</p>
+        <span class="sac-date"><i class="fa-solid fa-qrcode"></i> Cachet et signature</span>
+        <a routerLink="/administration" class="btn btn-secondary w-full mt-3">
+          <i class="fa-solid fa-file-contract"></i> Gérer
+        </a>
+      </div>
+
+      <div class="ui-card simple-action-card">
+        <div class="sac-head">
+          <i class="fa-solid fa-graduation-cap text-purple"></i>
+          <h3>Gestion Étudiants</h3>
+        </div>
+        <p class="sac-info">Inscriptions et dossiers des étudiants</p>
+        <span class="sac-date"><i class="fa-solid fa-users"></i> 1,450+ inscrits</span>
+        <a routerLink="/academic" class="btn btn-secondary w-full mt-3">
+          <i class="fa-solid fa-users"></i> Voir l'Effectif
+        </a>
+      </div>
+    </div>
+
+    <!-- 2 Columns: Requests & Overview -->
+    <div class="portal-two-cols">
+      <div class="ui-card">
+        <div class="ui-card-header">
+          <div class="ui-card-title">
+            <i class="fa-solid fa-stamp text-navy"></i>
+            <span>Dernières Demandes d'Attestations</span>
+          </div>
+          <a routerLink="/administration" class="btn-link-sm">Gérer &rarr;</a>
+        </div>
+        <table class="clean-table">
+          <thead>
+            <tr>
+              <th>Réf</th>
+              <th>Étudiant</th>
+              <th>Document</th>
+              <th class="text-right">Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let cert of certificates.slice(0, 4)">
+              <td><span class="font-mono text-navy font-bold">{{ cert.referenceNumber }}</span></td>
+              <td>{{ cert.studentName }}</td>
+              <td>{{ cert.documentType }}</td>
+              <td class="text-right"><span class="status-chip success">{{ cert.status }}</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="ui-card">
+        <div class="ui-card-header">
+          <div class="ui-card-title">
+            <i class="fa-solid fa-chart-pie text-gold"></i>
+            <span>Répartition par Filière</span>
+          </div>
+        </div>
+        <div class="ui-card-body">
+          <div class="simple-branch-row mb-3">
+            <div class="branch-line-top">
+              <span>Génie Informatique</span>
+              <strong>540 étudiants</strong>
+            </div>
+            <div class="progress-bar-track mt-1">
+              <div class="progress-bar-fill" style="width: 45%;"></div>
+            </div>
+          </div>
+
+          <div class="simple-branch-row mb-3">
+            <div class="branch-line-top">
+              <span>Génie Télécoms & Réseaux</span>
+              <strong>380 étudiants</strong>
+            </div>
+            <div class="progress-bar-track mt-1">
+              <div class="progress-bar-fill" style="width: 32%;"></div>
+            </div>
+          </div>
+
+          <div class="simple-branch-row">
+            <div class="branch-line-top">
+              <span>Mécatronique & Robotique</span>
+              <strong>310 étudiants</strong>
+            </div>
+            <div class="progress-bar-track mt-1">
+              <div class="progress-bar-fill" style="width: 23%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

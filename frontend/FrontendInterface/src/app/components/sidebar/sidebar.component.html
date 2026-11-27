@@ -1,0 +1,114 @@
+<aside class="app-sidebar">
+  <!-- Brand Logo & University Identity -->
+  <div class="sidebar-brand-box">
+    <div class="brand-link-flex">
+      <img src="assets/iit-1536x970-1.png" alt="Logo IIT" class="iit-brand-logo">
+      <div class="brand-text-col">
+        <span class="app-name">Edu<span class="gold-accent">Campus</span></span>
+        <span class="univ-sub">IIT Sfax &bull; Portail Universitaire</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Links Tree -->
+  <nav class="sidebar-nav-scroll">
+    <!-- Group: VUE D'ENSEMBLE -->
+    <div class="nav-section-title">VUE D'ENSEMBLE</div>
+    <ul class="nav-group-list">
+      <li>
+        <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item-link">
+          <i class="fa-solid fa-chart-pie nav-icon"></i>
+          <span>Tableau de Bord</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Group: PÉDAGOGIE & ÉTUDES (Responsabilité 1) -->
+    <div class="nav-section-title">PÉDAGOGIE & ÉTUDES</div>
+    <ul class="nav-group-list">
+      <li>
+        <a routerLink="/academic" routerLinkActive="active" class="nav-item-link">
+          <i class="fa-solid fa-graduation-cap nav-icon"></i>
+          <span>Gestion Académique</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Group: ESPACES & EXAMENS (Responsabilité 2) -->
+    <div class="nav-section-title">ESPACES & EXAMENS</div>
+    <ul class="nav-group-list">
+      <li>
+        <a routerLink="/smart-space" routerLinkActive="active" class="nav-item-link">
+          <i class="fa-solid fa-door-open nav-icon"></i>
+          <span>Salles & Évaluations</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Group: ADMINISTRATION (Responsabilité 3) -->
+    <div class="nav-section-title">ADMINISTRATION & SCOLARITÉ</div>
+    <ul class="nav-group-list">
+      <li>
+        <a routerLink="/administration" routerLinkActive="active" class="nav-item-link">
+          <i class="fa-solid fa-stamp nav-icon"></i>
+          <span>Statut & Certifications</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Group: ESPACE PERSONNEL -->
+    <div class="nav-section-title">ESPACE PERSONNEL</div>
+    <ul class="nav-group-list">
+      <li>
+        <a routerLink="/portal" routerLinkActive="active" class="nav-item-link">
+          <i class="fa-solid fa-id-badge nav-icon"></i>
+          <span>Mon Espace Dédié</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Sidebar Footer: Role Quick Switcher -->
+  <div class="sidebar-footer-box">
+    <div class="role-switch-title">PROFIL UTILISATEUR</div>
+    <div class="role-selector-segmented">
+      <button 
+        type="button" 
+        class="role-seg-btn" 
+        [class.active]="currentRole === 'student'" 
+        (click)="setRole('student')">
+        Étudiant
+      </button>
+      <button 
+        type="button" 
+        class="role-seg-btn" 
+        [class.active]="currentRole === 'teacher'" 
+        (click)="setRole('teacher')">
+        Enseignant
+      </button>
+      <button 
+        type="button" 
+        class="role-seg-btn" 
+        [class.active]="currentRole === 'admin'" 
+        (click)="setRole('admin')">
+        Admin
+      </button>
+    </div>
+
+    <div class="current-user-card">
+      <div class="user-avatar-dot">
+        <span *ngIf="currentRole === 'student'">YB</span>
+        <span *ngIf="currentRole === 'teacher'">TL</span>
+        <span *ngIf="currentRole === 'admin'">AD</span>
+      </div>
+      <div class="user-text-meta">
+        <span class="user-fullname" *ngIf="currentRole === 'student'">Youssef Ben Amor</span>
+        <span class="user-fullname" *ngIf="currentRole === 'teacher'">Dr. Tarek Louati</span>
+        <span class="user-fullname" *ngIf="currentRole === 'admin'">Direction Scolarité</span>
+        <span class="user-subrole">
+          {{ currentRole === 'student' ? 'Génie Info - 3A' : currentRole === 'teacher' ? 'Département Info' : 'Scolarité Centrale' }}
+        </span>
+      </div>
+    </div>
+  </div>
+</aside>

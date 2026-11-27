@@ -1,0 +1,270 @@
+.app-sidebar {
+  width: 260px;
+  background-color: #ffffff;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+.sidebar-brand-box {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand-link-flex {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.iit-brand-logo {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+}
+
+.brand-text-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.app-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--iit-navy);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.gold-accent {
+  color: var(--iit-gold);
+}
+
+.univ-sub {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.sidebar-nav-scroll {
+  flex: 1;
+  padding: 1.25rem 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.nav-section-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--text-subtle);
+  letter-spacing: 0.08em;
+  padding: 0.85rem 0.5rem 0.35rem;
+  text-transform: uppercase;
+}
+
+.nav-section-title:first-child {
+  padding-top: 0.2rem;
+}
+
+.nav-group-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-item-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.nav-icon {
+  font-size: 0.95rem;
+  color: var(--text-subtle);
+  width: 18px;
+  text-align: center;
+  transition: color 0.15s ease;
+}
+
+.nav-item-link:hover {
+  background-color: var(--bg-app);
+  color: var(--iit-navy);
+}
+
+.nav-item-link:hover .nav-icon {
+  color: var(--iit-navy);
+}
+
+.nav-item-link.active {
+  background-color: var(--iit-navy-light);
+  color: var(--iit-navy);
+  font-weight: 700;
+  border-left: 3px solid var(--iit-navy);
+}
+
+.nav-item-link.active .nav-icon {
+  color: var(--iit-navy);
+}
+
+.sidebar-footer-box {
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--border);
+  background-color: #f8fafc;
+}
+
+.role-switch-title {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-subtle);
+  letter-spacing: 0.06em;
+  margin-bottom: 0.45rem;
+}
+
+.role-selector-segmented {
+  display: flex;
+  background-color: #e2e8f0;
+  padding: 2px;
+  border-radius: 6px;
+  gap: 2px;
+  margin-bottom: 0.85rem;
+}
+
+.role-seg-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 0.3rem 0.2rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+  text-align: center;
+}
+
+.role-seg-btn:hover {
+  color: var(--text-primary);
+}
+
+.role-seg-btn.active {
+  background-color: #ffffff;
+  color: var(--iit-navy);
+  font-weight: 700;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.current-user-card {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.user-avatar-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--iit-navy);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+  border: 1.5px solid var(--iit-gold);
+  flex-shrink: 0;
+}
+
+.user-text-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.user-fullname {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.user-subrole {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+  .app-sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-brand-box {
+    padding: 0.75rem 1rem;
+  }
+
+  .iit-brand-logo {
+    height: 32px;
+  }
+
+  .sidebar-nav-scroll {
+    flex-direction: row;
+    gap: 0.35rem;
+    padding: 0.5rem 0.75rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .nav-section-title {
+    display: none;
+  }
+
+  .nav-group-list {
+    flex-direction: row;
+    flex: 0 0 auto;
+  }
+
+  .nav-item-link {
+    white-space: nowrap;
+    min-height: 40px;
+  }
+
+  .sidebar-footer-box {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .role-switch-title,
+  .current-user-card {
+    display: none;
+  }
+
+  .role-selector-segmented {
+    max-width: 360px;
+    margin: 0 auto;
+  }
+}

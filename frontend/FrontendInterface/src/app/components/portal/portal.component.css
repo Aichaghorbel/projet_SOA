@@ -1,0 +1,276 @@
+/* ==========================================================================
+   Portal Component - Simple, Clean & Minimal (For Étudiant, Enseignant & Admin)
+   ========================================================================== */
+
+.role-segmented-toggle {
+  display: flex;
+  background-color: #e2e8f0;
+  padding: 3px;
+  border-radius: var(--radius-md);
+  gap: 3px;
+}
+
+/* The templates use these spacing helpers without loading a utility CSS framework. */
+.mb-4 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 0.75rem; }
+.mt-3 { margin-top: 0.75rem; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-1 { margin-top: 0.25rem; }
+
+.role-pill-btn {
+  background: transparent;
+  border: none;
+  padding: 0.45rem 1rem;
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.15s ease;
+}
+
+.role-pill-btn:hover {
+  color: var(--text-primary);
+}
+
+.role-pill-btn.active {
+  background-color: #ffffff;
+  color: var(--iit-navy);
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* User Banner Clean */
+.user-banner-clean {
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  border-left: 4px solid var(--iit-navy);
+  background: #ffffff;
+}
+
+.banner-left-info {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+.avatar-circle-simple {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--iit-navy);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 800;
+  border: 2px solid var(--iit-gold);
+  flex-shrink: 0;
+}
+
+.avatar-circle-simple.teacher {
+  background: #0a254d;
+  border-color: #38bdf8;
+}
+
+.avatar-circle-simple.admin {
+  background: #6d28d9;
+  border-color: #c084fc;
+}
+
+.banner-name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.banner-user-name {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.banner-role-sub {
+  font-size: 0.825rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+}
+
+.banner-pills-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.stat-pill-box {
+  background: var(--bg-app);
+  border: 1px solid var(--border);
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  min-width: 95px;
+  text-align: center;
+}
+
+.sp-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+  letter-spacing: 0.04em;
+}
+
+.sp-val {
+  font-size: 0.95rem;
+  font-weight: 800;
+  margin-top: 0.1rem;
+}
+
+/* 3 Action Cards - Simple & Direct */
+.cards-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.simple-action-card {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-xs);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.simple-action-card:hover {
+  transform: translateY(-2px);
+  border-color: #cbd5e1;
+  box-shadow: var(--shadow-sm);
+}
+
+.sac-head {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.5rem;
+}
+
+.sac-head i {
+  font-size: 1.2rem;
+}
+
+.sac-head h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.sac-info {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  line-height: 1.35;
+}
+
+.sac-date {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: auto;
+}
+
+.w-full {
+  width: 100%;
+}
+
+/* 2 Columns Section below cards */
+.portal-two-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.btn-link-sm {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--iit-navy);
+  text-decoration: none;
+}
+
+.btn-link-sm:hover {
+  text-decoration: underline;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-navy { color: var(--iit-navy); }
+.text-gold { color: var(--iit-gold); }
+.text-success { color: var(--success-text); }
+.text-purple { color: #8b5cf6; }
+
+/* Simple Branch Stats */
+.simple-branch-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.branch-line-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.825rem;
+  color: var(--text-primary);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .cards-grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .portal-two-cols { grid-template-columns: 1fr; }
+  .portal-two-cols > .ui-card { min-width: 0; overflow-x: auto; }
+}
+
+@media (max-width: 640px) {
+  .user-banner-clean { flex-direction: column; align-items: flex-start; }
+  .banner-pills-right { width: 100%; justify-content: space-between; }
+  .cards-grid-3 { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+  .role-segmented-toggle {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .role-pill-btn {
+    flex: 0 0 auto;
+    padding: 0.45rem 0.65rem;
+  }
+
+  .banner-left-info {
+    align-items: flex-start;
+  }
+
+  .banner-pills-right {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+}
