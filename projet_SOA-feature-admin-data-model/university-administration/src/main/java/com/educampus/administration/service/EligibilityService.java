@@ -19,7 +19,9 @@ public class EligibilityService {
             "STU-002", StudentStatus.ACTIVE,
             "STU-SUSP", StudentStatus.SUSPENDED,
             "STU-WDR", StudentStatus.WITHDRAWN,
-            "STU-GRAD", StudentStatus.GRADUATED);
+            "STU-GRAD", StudentStatus.GRADUATED,
+            "ETU2025101", StudentStatus.ACTIVE,
+            "ETU2025102", StudentStatus.ACTIVE);
 
     /**
      * Vérifie l'éligibilité. Retourne le statut si l'étudiant est éligible,

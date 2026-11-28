@@ -80,6 +80,25 @@ public class GlobalExceptionHandler {
                 "Paramètre '" + ex.getName() + "' invalide", request, null);
     }
 
+    @ExceptionHandler(UniversityAdministrationRejectedException.class)
+    public ResponseEntity<ErrorResponse> handleAdministrationRejected(
+            UniversityAdministrationRejectedException ex, HttpServletRequest request) {
+        return build(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage(), request, null);
+    }
+
+    @ExceptionHandler(UniversityAdministrationUnavailableException.class)
+    public ResponseEntity<ErrorResponse> handleAdministrationUnavailable(
+            UniversityAdministrationUnavailableException ex, HttpServletRequest request) {
+        log.error("University Administration injoignable : {}", ex.getMessage());
+        return build(HttpStatus.SERVICE_UNAVAILABLE, ex.getMessage(), request, null);
+    }
+
+    @ExceptionHandler(InvalidCertificationTypeException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidCertificationType(
+            InvalidCertificationTypeException ex, HttpServletRequest request) {
+        return build(HttpStatus.BAD_REQUEST, ex.getMessage(), request, null);
+    }
+
     /**
      * Filet de sécurité : toute autre erreur. Les erreurs HTTP standard de Spring (404 sur une URL
      * inconnue, 405, 415...) gardent leur statut ; le reste devient un 500 sans détail technique.

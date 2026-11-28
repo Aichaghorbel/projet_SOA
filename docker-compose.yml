@@ -42,12 +42,17 @@ services:
     depends_on:
       postgres-academic:
         condition: service_healthy
+      soap-university-administration:
+        condition: service_started
     environment:
       DB_URL: jdbc:postgresql://postgres-academic:5432/academic_db
       DB_USERNAME: academic
       DB_PASSWORD: academic
       SPRING_PROFILES_ACTIVE: prod
       SERVER_PORT: 8081
+      UNIVERSITY_ADMIN_URL: http://soap-university-administration:8083/ws
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WS_CLIENT: TRACE
+
     ports:
       - "8081:8081"
 

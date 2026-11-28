@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  EduCampus - University Administration Service
+  Contrat SOAP (contract-first) : le XSD est defini en premier, le WSDL en decoule.
+  Branche : feature/soap-xsd-wsdl
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://educampus.com/soap/university-administration"
+           targetNamespace="http://educampus.com/soap/university-administration"
+           elementFormDefault="qualified">
+
+    <!-- ===================== Types simples ===================== -->
+
+    <!-- Identifiant etudiant partage entre les 3 services (a aligner avec M6 et Academic) -->
+    <xs:simpleType name="StudentId">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="50"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="StudentStatus">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ACTIVE"/>
+            <xs:enumeration value="SUSPENDED"/>
+            <xs:enumeration value="GRADUATED"/>
+            <xs:enumeration value="WITHDRAWN"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="CertificationType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ENROLLMENT_CERTIFICATE"/>
+            <xs:enumeration value="TRANSCRIPT"/>
+            <xs:enumeration value="SUCCESS_CERTIFICATE"/>
+            <xs:enumeration value="DEGREE_CERTIFICATE"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Statuts imposes par le sprint (Issue 6) -->
+    <xs:simpleType name="CertificationStatus">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SUBMITTED"/>
+            <xs:enumeration value="IN_REVIEW"/>
+            <xs:enumeration value="APPROVED"/>
+            <xs:enumeration value="REJECTED"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="FaultCode">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="INVALID_REQUEST"/>
+            <xs:enumeration value="STUDENT_NOT_FOUND"/>
+            <xs:enumeration value="INTERNAL_ERROR"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- ===================== Operation 1 : CheckEligibility ===================== -->
+
+    <xs:element name="CheckEligibilityRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="studentId" type="tns:StudentId"/>
+                <!-- ex : 2026-2027 -->
+                <xs:element name="academicYear" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="CheckEligibilityResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="studentId" type="tns:StudentId"/>
+                <xs:element name="eligible" type="xs:boolean"/>
+                <xs:element name="studentStatus" type="tns:StudentStatus"/>
+                <!-- renseigne surtout quand eligible = false -->
+                <xs:element name="reason" type="xs:string" minOccurs="0"/>
+                <xs:element name="checkedAt" type="xs:dateTime"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- ===================== Operation 2 : SubmitCertification ===================== -->
+
+    <xs:element name="SubmitCertificationRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="studentId" type="tns:StudentId"/>
+                <xs:element name="certificationType" type="tns:CertificationType"/>
+                <xs:element name="comment" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="SubmitCertificationResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="requestId" type="xs:string"/>
+                <xs:element name="studentId" type="tns:StudentId"/>
+                <xs:element name="status" type="tns:CertificationStatus"/>
+                <xs:element name="submittedAt" type="xs:dateTime"/>
+                <xs:element name="message" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- ===================== Erreurs SOAP (detail du Fault) ===================== -->
+
+    <xs:element name="ServiceFault">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="code" type="tns:FaultCode"/>
+                <xs:element name="message" type="xs:string"/>
+                <xs:element name="timestamp" type="xs:dateTime"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>
